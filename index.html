@@ -44,6 +44,124 @@ input[type=file]{display:none}
 .hidden{display:none!important}
 .modal{position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center;padding:18px;z-index:10}.modal .card{max-width:650px;width:100%}
 @media(max-width:700px){.answer-grid{grid-template-columns:1fr}.question{font-size:27px}.scorebar{grid-template-columns:repeat(2,1fr)}.card{padding:18px}}
+
+/* Quizmaster v7 — iPad landscape console */
+html, body { height:100%; overflow:hidden; }
+body { overscroll-behavior:none; }
+#app { height:100dvh; overflow:hidden; }
+.container { height:100%; max-width:none; padding:14px 18px; }
+.quiz-layout {
+  height:calc(100dvh - 28px);
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 290px;
+  gap:14px;
+  align-items:stretch;
+}
+.quiz-main {
+  min-width:0;
+  min-height:0;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.side-board {
+  position:static;
+  height:100%;
+  min-height:0;
+  box-sizing:border-box;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.side-board h3 { margin:4px 0 14px; font-size:22px; }
+.side-leaders { flex:1; display:flex; flex-direction:column; justify-content:space-evenly; }
+.side-leader {
+  min-height:62px;
+  margin:5px 0;
+  padding:10px 12px;
+  font-size:17px;
+}
+.side-rank { width:30px; font-size:18px; }
+.side-name { font-size:17px; }
+.side-points { font-size:19px; }
+.side-turn { font-size:16px; margin-top:12px; padding:13px; }
+
+.quiz-main .center { flex:0 0 auto; }
+.quiz-main .number-grid {
+  flex:1 1 auto;
+  min-height:0;
+  width:min(88%,760px);
+  margin:18px auto;
+  align-content:stretch;
+  grid-auto-rows:1fr;
+}
+.number-tile {
+  min-height:0;
+  font-size:42px;
+  border-radius:18px;
+}
+.quiz-main .actions { flex:0 0 auto; margin-top:8px; }
+
+.question {
+  flex:0 0 auto;
+  min-height:90px;
+  margin:22px auto 14px;
+  font-size:34px;
+}
+.answer-grid {
+  flex:1 1 auto;
+  min-height:0;
+  width:min(92%,900px);
+  margin:0 auto;
+  align-content:stretch;
+  grid-auto-rows:1fr;
+}
+.answer { min-height:0; font-size:22px; }
+.regular-answer-area {
+  flex:1 1 auto;
+  min-height:0;
+  width:min(92%,900px);
+  margin:0 auto;
+  box-sizing:border-box;
+  display:flex;
+}
+.regular-answer { font-size:30px; }
+.quiz-main > .actions { margin:12px 0; }
+.quiz-main > div[style*="border-top"] {
+  flex:0 0 auto;
+  margin-top:10px !important;
+  padding-top:10px !important;
+}
+.score-actions { gap:12px; }
+.score-actions .score-btn {
+  min-width:140px;
+  min-height:52px;
+  font-size:16px;
+}
+.muted { font-size:14px; }
+
+@media (orientation:landscape) and (max-height:800px) {
+  .container { padding:10px 14px; }
+  .quiz-layout { height:calc(100dvh - 20px); grid-template-columns:minmax(0,1fr) 275px; }
+  .question { margin:14px auto 10px; min-height:70px; font-size:30px; }
+  .number-grid { margin:10px auto; }
+  .number-tile { font-size:36px; }
+  .side-leader { min-height:54px; }
+  .score-actions .score-btn { min-width:125px; min-height:46px; }
+  .quiz-main > .actions { margin:8px 0; }
+}
+@media (orientation:portrait) {
+  html, body { overflow:auto; }
+  #app { height:auto; min-height:100dvh; overflow:visible; }
+  .container { height:auto; }
+  .quiz-layout { height:auto; grid-template-columns:1fr; }
+  .quiz-main, .side-board { height:auto; min-height:0; }
+  .side-board { order:2; }
+  .quiz-main .number-grid { flex:none; }
+}
+
+.landscape-hint{font-size:13px;color:#6b7280;margin-top:10px}
 </style>
 </head>
 <body>
@@ -63,7 +181,7 @@ function home(){
    <div style="font-size:64px">🎯</div><h1>Quizmaster</h1>
    ${quiz?`<h2>${esc(quiz.name)}</h2><p>${quiz.rounds.length} rounds · ${quiz.rounds.reduce((n,r)=>n+r.questions.length,0)} questions</p>
    <div class="actions"><button class="btn primary big" onclick="openSetup()">▶ Start Quiz</button><button class="btn" onclick="loadQuiz()">Reload Quiz</button></div>`
-   :`<p>Loading quiz…</p><p class="muted">Quiz content is loaded from <strong>quiz.json</strong>.</p>`}
+   :`<p>Loading quiz…</p><p class="muted">Quiz content is loaded from <strong>quiz.json</strong>.</p><p class="landscape-hint">For the best experience, use the iPad in landscape.</p>`}
  </div>`;
 }
 async function loadQuiz(){

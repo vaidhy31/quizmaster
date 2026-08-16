@@ -1,8 +1,12 @@
-Quizmaster v6 PWA
+Quizmaster v7 — iPad landscape layout
 
-Upload all files to the root of a GitHub Pages repository:
-index.html, quiz.json, manifest.json, sw.js, icon-192.png, icon-512.png.
+Replace the files in the GitHub Pages repository with:
+index.html
+quiz.json
+manifest.json
+sw.js
+icon-192.png
+icon-512.png
 
-Then enable GitHub Pages from Settings -> Pages -> Deploy from branch -> main -> /(root).
-
-Open the resulting HTTPS URL in Safari on the iPad and use Share -> Add to Home Screen.
+The service-worker cache has been bumped to v7 so the updated layout is picked up.
+For best results, reload the GitHub Pages URL once in Safari before launching the Home Screen PWA.
