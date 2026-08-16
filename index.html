@@ -162,6 +162,30 @@ body { overscroll-behavior:none; }
 }
 
 .landscape-hint{font-size:13px;color:#6b7280;margin-top:10px}
+
+/* v7.1 layout refinements */
+.board-header{display:flex;align-items:center;justify-content:center;flex:0 0 auto;min-height:54px;text-align:center}
+.board-header h1{margin:2px 0 0;font-size:28px}
+.board-header .round{margin:0}
+.side-current{text-align:center;padding:10px 8px;margin:0 0 10px;border-radius:12px;background:#eef2ff;color:#3730a3;font-size:14px}
+.quiz-main .number-grid{display:grid;grid-template-columns:repeat(var(--grid-cols),minmax(0,1fr));grid-auto-rows:minmax(0,1fr);flex:1 1 auto;min-height:0;overflow:hidden}
+.quiz-main .number-tile{width:100%;height:100%;box-sizing:border-box}
+.quiz-main .question{flex:0 0 auto;margin:10px auto 10px;min-height:70px}
+.quiz-main .answer-grid{flex:1 1 0;min-height:0;max-height:none;margin:0 auto 12px;overflow:hidden}
+.quiz-main .regular-answer-area{flex:1 1 0;min-height:0;margin:0 auto 12px;max-height:none;overflow:hidden}
+.quiz-main .actions{flex:0 0 auto;margin:8px 0 12px}
+.quiz-main > div[style*="border-top"]{flex:0 0 auto;margin-top:0 !important;padding-top:10px !important;margin-bottom:0 !important}
+.quiz-main .score-actions{margin-bottom:2px}
+@media (orientation:landscape) and (max-height:800px){
+ .board-header{min-height:42px}.board-header h1{font-size:24px}
+ .quiz-main .number-grid{margin:8px auto 10px;width:min(92%,780px);gap:12px}
+ .quiz-main .number-tile{font-size:34px}
+ .quiz-main .question{margin:6px auto 8px;min-height:58px;font-size:28px}
+ .quiz-main .answer-grid{margin-bottom:8px}
+ .quiz-main .regular-answer-area{margin-bottom:8px}
+ .quiz-main .actions{margin:5px 0 8px}
+}
+
 </style>
 </head>
 <body>
@@ -238,20 +262,19 @@ function compactLeaderboard(){
 }
 function compactLeaderboard(){
  const sorted=game.scores.map((s,i)=>({s,i})).sort((a,b)=>b.s-a.s);
- return `<aside class="card side-board"><h3>🏆 Leaderboard</h3>
+ return `<aside class="card side-board"><h3>🏆 Leaderboard</h3><div class="side-current">Team ${game.currentTeam+1} of ${quiz.teams.length}: <strong>${esc(quiz.teams[game.currentTeam])}</strong></div>
  ${sorted.map((x,p)=>`<div class="side-leader ${x.i===game.currentTeam?'current':''}">
  <div class="side-rank">${['🥇','🥈','🥉'][p]||p+1}</div><div class="side-name">${esc(quiz.teams[x.i])}</div><div class="side-points">${x.s}</div>
  </div>`).join('')}
- <div class="side-turn">${esc(quiz.teams[game.currentTeam])}'s turn</div></aside>`;
+</aside>`;
 }
 function roundBoard(){
  const r=quiz.rounds[game.round],used=game.usedQuestions[game.round],remaining=r.questions.length-used.size;
  app.innerHTML=`<div class="quiz-layout"><section class="card quiz-main">
- <div class="center"><div class="round">Round ${game.round+1}</div><h1>${esc(r.name)}</h1>
- <p>Team ${game.currentTeam+1} of ${quiz.teams.length}</p><h2>It's ${esc(quiz.teams[game.currentTeam])}'s turn</h2><p>Select a number to reveal your question.</p></div>
+ <div class="board-header"><div><div class="round">Round ${game.round+1}</div><h1>${esc(r.name)}</h1></div></div>
  <div class="number-grid" style="--grid-cols:${gridColumns(r.questions.length)}">
  ${r.questions.map((q,i)=>`<button class="number-tile ${used.has(i)?'taken':''}" ${used.has(i)?'disabled':''} data-question="${i}">${i+1}</button>`).join('')}</div>
- <div class="center muted" style="margin-top:18px">${remaining} question${remaining===1?'':'s'} remaining</div>
+ 
  <div class="actions"><button class="btn primary big" onclick="game.screen='leader';game.leaderMode='roundEnd';render()">${game.round+1<quiz.rounds.length?'End Round →':'Finish Quiz'}</button></div>
  </section>${compactLeaderboard()}</div>`;
  document.querySelectorAll('.number-tile:not(.taken)').forEach(b=>b.addEventListener('click',()=>chooseQuestion(Number(b.dataset.question))));
