@@ -431,187 +431,159 @@ body {
   }
 }
 
+
+/* Quizmaster v8.8 — question/answer balance + colourful scoring */
+@media (orientation:landscape){
+  .quiz-main .question{
+    flex:0 0 40%;
+    height:auto;
+    min-height:0;
+    margin:4px 0 8px;
+    width:100%;
+    box-sizing:border-box;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:10px 22px;
+  }
+
+  .quiz-main .answer-grid,
+  .quiz-main .regular-answer-area{
+    flex:0 0 60%;
+    height:auto;
+    min-height:0;
+    margin:0 0 8px;
+    width:100%;
+    box-sizing:border-box;
+  }
+
+  .quiz-main .answer-grid{
+    grid-template-rows:repeat(2,minmax(0,1fr));
+    gap:10px;
+    padding:0 8px;
+  }
+
+  .quiz-main .regular-answer-area{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+
+  .quiz-main .actions{
+    flex:0 0 auto;
+  }
+
+  .quiz-main .score-panel{
+    flex:0 0 auto;
+  }
+
+  /* Preserve the colourful V8 scoring treatment. */
+  .score-panel{
+    background:linear-gradient(135deg,#f1efff,#fff4fb);
+    border:1px solid #d9d2ff;
+    box-shadow:0 4px 12px rgba(79,70,229,.08);
+  }
+
+  .score-actions .score-btn{
+    border:0;
+    color:#fff;
+    box-shadow:0 3px 8px rgba(0,0,0,.10);
+  }
+
+  .score-actions .score-btn:nth-child(1){background:#5146e5}
+  .score-actions .score-btn:nth-child(2){background:#10a875}
+  .score-actions .score-btn:nth-child(3){background:#f28c28}
+  .score-actions .score-btn:nth-child(4){background:#2867d8}
+
+  .score-actions .score-btn.good{
+    transform:translateY(-2px);
+    box-shadow:0 5px 12px rgba(0,0,0,.18);
+    outline:3px solid rgba(255,255,255,.9);
+  }
+
+  .score-panel-title{
+    color:#302b75;
+  }
+}
+
+@media (orientation:landscape) and (max-height:700px){
+  .quiz-main .question{
+    flex-basis:40%;
+    padding:6px 18px;
+    font-size:25px;
+  }
+  .quiz-main .answer-grid,
+  .quiz-main .regular-answer-area{
+    flex-basis:60%;
+  }
+  .score-panel{padding:5px 8px 4px}
+  .score-panel-title{font-size:15px;margin-bottom:4px}
+  .score-actions .score-btn{min-height:40px}
+}
+
+
+@media (orientation:landscape){
+  .quiz-main .question-zone{
+    flex:1 1 auto;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  .quiz-main .question-zone .question{
+    flex:0 0 40%;
+    height:auto;
+    min-height:0;
+    margin:0 0 6px;
+  }
+  .quiz-main .question-zone .answer-grid,
+  .quiz-main .question-zone .regular-answer-area{
+    flex:0 0 60%;
+    height:auto;
+    min-height:0;
+    margin:0;
+  }
+  .quiz-main .question-zone .answer-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-rows:repeat(2,minmax(0,1fr));
+    gap:10px;
+    padding:0 8px;
+    box-sizing:border-box;
+  }
+  .quiz-main .question-zone .regular-answer-area{
+    box-sizing:border-box;
+  }
+}
+
+
+/* Quizmaster v8.9 — MCQ choice border inset */
+@media (orientation:landscape){
+  .quiz-main .question-zone .answer-grid{
+    width:100%;
+    padding:6px;
+    margin:0;
+    box-sizing:border-box;
+    overflow:hidden;
+  }
+  .quiz-main .question-zone .answer-grid .answer{
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    box-sizing:border-box;
+  }
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">🎯 Quizmaster <small>JSON Edition</small><span class="version-badge">v8.7</span></div></header>
+<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v9.0</span></div></header>
 <main id="app" class="screen"></main>
 </div>
-<script>
-const app=document.getElementById('app');
-let quiz=null;
-let game={screen:'home',round:0,q:0,scores:[],selected:null,revealed:false,currentAwards:new Set(),currentTeam:0,usedQuestions:[],leaderMode:'view'};
-
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function render(){if(!quiz)return home(); if(game.screen==='setup')setup(); else if(game.screen==='board')roundBoard(); else if(game.screen==='play')play(); else if(game.screen==='leader')leaderboard(); else home()}
-function home(){
- app.innerHTML=`<div class="card center">
-   <div style="font-size:64px">🎯</div><h1>Quizmaster</h1>
-   ${quiz?`<h2>${esc(quiz.name)}</h2><p>${quiz.rounds.length} rounds · ${quiz.rounds.reduce((n,r)=>n+r.questions.length,0)} questions</p>
-   <div class="actions"><button class="btn primary big" onclick="openSetup()">▶ Start Quiz</button><button class="btn" onclick="loadQuiz()">Reload Quiz</button></div>`
-   :`<p>Loading quiz…</p><p class="muted">Quiz content is loaded from <strong>quiz.json</strong>.</p><p class="landscape-hint">For the best experience, use the iPad in landscape.</p>`}
- </div>`;
-}
-async function loadQuiz(){
- try{
-  const response=await fetch('./quiz.json',{cache:'no-store'});
-  if(!response.ok)throw new Error('quiz.json could not be loaded');
-  const x=await response.json(); validateQuiz(x); quiz=x; render();
- }catch(err){
-  app.innerHTML=`<div class="card center"><div style="font-size:54px">⚠️</div><h2>Could not load the quiz</h2><p>${esc(err.message)}</p><p class="muted">Make sure quiz.json is in the same folder as the app.</p><div class="actions"><button class="btn primary" onclick="loadQuiz()">Try Again</button></div></div>`;
- }
-}
-
-
-function validateQuiz(x){
- if(!x||typeof x!=='object'||!Array.isArray(x.rounds)||!x.rounds.length)throw Error('The JSON must contain at least one round.');
- x.rounds.forEach((r,i)=>{if(!r.name||!Array.isArray(r.questions))throw Error('Round '+(i+1)+' is invalid.')});
-}
-function resetQuiz(){quiz=null;game={screen:'home',round:0,q:0,scores:[],selected:null,revealed:false,currentAwards:new Set(),currentTeam:0,usedQuestions:[],leaderMode:'view'};render()}
-function openSetup(){game.screen='setup';render()}
-function setup(){
- const teams=quiz.teams||['Team A','Team B','Team C','Team D'];
- app.innerHTML=`<div class="card"><h2>Quiz Setup</h2><h3>${esc(quiz.name)}</h3><p>${quiz.rounds.length} rounds · ${quiz.rounds.reduce((n,r)=>n+r.questions.length,0)} questions</p>
- <h3>Teams</h3><div id="teamInputs">${teams.map((t,i)=>`<div style="margin:10px 0"><input class="teamInput" value="${esc(t)}" placeholder="Team ${i+1}"></div>`).join('')}</div>
- <div class="actions"><button class="btn" onclick="addTeam()">+ Add Team</button><button class="btn danger" onclick="removeTeam()">Remove Last Team</button></div>
- <div class="actions"><button class="btn primary big" onclick="startGame()">Start Game →</button><button class="btn" onclick="goHome()">Cancel</button></div></div>`;
-}
-function addTeam(){const c=document.querySelectorAll('.teamInput').length;if(c<8){const d=document.getElementById('teamInputs');d.insertAdjacentHTML('beforeend',`<div style="margin:10px 0"><input class="teamInput" value="Team ${String.fromCharCode(65+c)}"></div>`)}}
-function removeTeam(){const a=document.querySelectorAll('.teamInput');if(a.length>2)a[a.length-1].parentElement.remove()}
-function startGame(){
- quiz.teams=[...document.querySelectorAll('.teamInput')].map((e,i)=>e.value.trim()||'Team '+(i+1));
- game={screen:'board',round:0,q:null,scores:quiz.teams.map(()=>0),selected:null,revealed:false,currentAwards:new Set(),currentTeam:0,usedQuestions:quiz.rounds.map(()=>new Set())};
- render()
-}
-function gridColumns(n){
- // Prefer an exact factor pair closest to a square.
- // Examples: 6 -> 3x2, 8 -> 4x2, 9 -> 3x3, 12 -> 4x3, 16 -> 4x4.
- for(let c=Math.floor(Math.sqrt(n)); c>=2; c--){
-   if(n%c===0) return Math.max(c,n/c);
- }
- // For prime/awkward counts, use a compact near-square layout.
- return Math.ceil(Math.sqrt(n));
-}
-function compactLeaderboard(){
- const sorted=game.scores.map((s,i)=>({s,i})).sort((a,b)=>b.s-a.s);
- const nextButton=game.screen==='play'&&game.revealed?`<div class="side-next"><button class="btn" onclick="finishQuestion()">Next Turn&nbsp; →</button></div>`:'';
- return `<aside class="card side-board"><h3>🏆 Leaderboard</h3>
- <div class="side-current">Team ${game.currentTeam+1} of ${quiz.teams.length}: <strong>${esc(quiz.teams[game.currentTeam])}</strong></div>
- <div class="side-leaders">${sorted.map((x,p)=>`<div class="side-leader ${x.i===game.currentTeam?'current':''}">
- <div class="side-rank">${['🥇','🥈','🥉'][p]||p+1}</div><div class="side-name">${esc(quiz.teams[x.i])}</div><div class="side-points">${x.s}</div></div>`).join('')}</div>
- ${nextButton}</aside>`;
-}
-
-function roundBoard(){
- const r=quiz.rounds[game.round],used=game.usedQuestions[game.round];
- app.innerHTML=`<div class="quiz-layout"><section class="card quiz-main">
- <div class="board-header"><div><div class="round">ROUND ${game.round+1}</div><h1>${esc(r.name)}</h1></div></div>
- <div class="number-grid" style="--grid-cols:${gridColumns(r.questions.length)};--grid-rows:${Math.ceil(r.questions.length/gridColumns(r.questions.length))}">${r.questions.map((q,i)=>`<button class="number-tile ${used.has(i)?'taken':''}" ${used.has(i)?'disabled':''} data-question="${i}">${i+1}</button>`).join('')}</div>
- <div class="actions"><button class="btn primary big" data-action="next-round">🏁 ${game.round+1<quiz.rounds.length?'End Round':'Finish Quiz'}</button></div>
- <div class="board-footer-hint">Click a number to reveal the question</div>
- </section>${compactLeaderboard()}</div>`;
- document.querySelectorAll('.number-tile:not(.taken)').forEach(b=>b.addEventListener('click',()=>chooseQuestion(Number(b.dataset.question))));
- document.querySelector('[data-action="next-round"]').addEventListener('click',()=>{game.screen='leader';game.leaderMode='roundEnd';render()});
-}
-
-function chooseQuestion(index){
- const used=game.usedQuestions[game.round];
- if(used.has(index))return;
- used.add(index);
- game.q=index;
- game.selected=null;
- game.revealed=false;
- game.currentAwards=new Set();
- game.screen='play';
- render();
-}
-
-function currentQ(){return quiz.rounds[game.round]?.questions[game.q]}
-function play(){
- const r=quiz.rounds[game.round],q=currentQ();if(!q){game.screen='board';render();return}
- const multiple=q.type==='multiple',answer=multiple?q.options[q.answer]:q.answer;
- app.innerHTML=`<div class="quiz-layout"><section class="card quiz-main">
- <div class="quiz-head"><div><div class="round">ROUND ${game.round+1} · ${esc(r.name)}</div><div class="muted">Question ${game.q+1} of ${r.questions.length}</div></div></div>
- <div class="question">${esc(q.question)}</div>
- ${multiple?`<div class="answer-grid">${q.options.map((x,i)=>`<button class="answer ${game.revealed&&i===q.answer?'correct':''} ${game.revealed&&game.selected===i&&i!==q.answer?'wrong':''} ${!game.revealed&&game.selected===i?'selected':''}" ${game.revealed?'disabled':''} onclick="selectAnswer(${i})">${String.fromCharCode(65+i)}. ${esc(x)}</button>`).join('')}</div>`:`<div class="regular-answer-area"><div class="muted">ANSWER</div><div class="regular-answer">${game.revealed?esc(answer):'&nbsp;'}</div></div>`}
- <div class="actions">${!game.revealed?`<button class="btn primary big" onclick="reveal()">Reveal Answer</button>`:''}</div>
- <div class="score-panel"><div class="score-panel-title">Award ${q.points||10} points for this question</div>
- <div class="score-actions">${quiz.teams.map((t,i)=>`<button class="btn score-btn ${game.currentAwards.has(i)?'good':''}" onclick="toggleScore(${i})">${esc(t)}<br><strong>${game.currentAwards.has(i)?'+':''}${q.points||10}</strong></button>`).join('')}</div>
- <div class="muted" style="text-align:center;font-size:12px;margin-top:5px">Tap a team to award points · tap again to remove</div></div>
- </section>${compactLeaderboard()}</div>`;
-}
-
-function selectAnswer(i){if(!game.revealed){game.selected=i;render()}}
-function reveal(){
- game.revealed=true;
- render();
-}
-function toggleScore(i){
- const p=currentQ().points||10;
- if(game.currentAwards.has(i)){
-   game.currentAwards.delete(i);
-   game.scores[i]-=p;
- }else{
-   game.currentAwards.add(i);
-   game.scores[i]+=p;
- }
- render();
-}
-function finishQuestion(){
- // A completed question returns to the board; the quizmaster decides when the round ends.
- game.q=null;
- game.selected=null;
- game.revealed=false;
- game.currentAwards=new Set();
- game.currentTeam=(game.currentTeam+1)%quiz.teams.length;
- game.screen='board';
- game.leaderMode='view';
- render();
-}
-function finish(){game.screen='leader';game.leaderMode='view';render()}
-function leaderboard(){
- const sorted=game.scores.map((s,i)=>({s,i})).sort((a,b)=>b.s-a.s);
- const advancing=game.leaderMode==='roundEnd';
- const isFinal=game.round+1>=quiz.rounds.length;
- app.innerHTML=`<div class="card">
-   <div class="center">
-     <div style="font-size:58px">🏆</div>
-     <h1>${advancing?(isFinal?'Final Scores':'Round '+(game.round+1)+' Complete'):'Leaderboard'}</h1>
-     <p>${advancing?(isFinal?'The quiz is complete.':'Here are the scores before the next round.'):'Current standings'}</p>
-   </div>
-   ${sorted.map((x,p)=>`<div class="leader"><div class="rank">${['🥇','🥈','🥉'][p]||p+1}</div><div class="name">${esc(quiz.teams[x.i])}</div><div class="points">${x.s}</div></div>`).join('')}
-   <div class="actions">
-     ${advancing
-       ? (isFinal
-          ? `<button class="btn primary big" onclick="game.leaderMode='view';render()">Final Scores</button>`
-          : `<button class="btn primary big" onclick="advanceRound()">Next Round →</button>`)
-       : `<button class="btn" onclick="game.screen='board';render()">← Back to Round</button>`}
-     <button class="btn danger" onclick="if(confirm('Reset scores and start again?')){resetGame()}">Reset Game</button>
-     <button class="btn" onclick="goHome()">Home</button>
-   </div>
- </div>`;
-}
-function advanceRound(){
- if(game.round+1>=quiz.rounds.length){game.screen='leader';game.leaderMode='view';render();return}
- game.round++;
- game.q=null;
- game.currentTeam=game.round % quiz.teams.length;
- game.selected=null;
- game.revealed=false;
- game.currentAwards=new Set();
- game.screen='board';
- game.leaderMode='view';
- render();
-}
-function resetGame(){
- game={screen:'board',round:0,q:null,scores:quiz.teams.map(()=>0),selected:null,revealed:false,currentAwards:new Set(),currentTeam:0,usedQuestions:quiz.rounds.map(()=>new Set()),leaderMode:'view'};
- render();
-}
-
-function goHome(){game.screen='home';render()}
-if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{});}
-loadQuiz();
-</script>
+<script type="module" src="./js/app.js"></script>
 </body>
 </html>
