@@ -1030,11 +1030,35 @@ body {
   }
 }
 
+
+/* v10.1 — keep scoring card content vertically stable when selected */
+@media (orientation:landscape){
+  .score-actions > .score-btn{
+    transform:none !important;
+    transition:none !important;
+  }
+
+  .score-actions > .score-btn.good{
+    transform:none !important;
+  }
+
+  .score-points{
+    visibility:visible;
+    min-height:14px;
+    line-height:14px;
+  }
+
+  .score-team-name{
+    min-height:18px;
+    line-height:18px;
+  }
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v10.0</span></div></header>
+<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v10.1</span></div></header>
 <main id="app" class="screen"></main>
 </div>
 <script type="module" src="./js/app.js"></script>
