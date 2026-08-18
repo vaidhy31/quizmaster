@@ -669,11 +669,41 @@ body {
   .quiz-main .question-controls{margin:9px 0 8px}
 }
 
+
+/* v9.4 — softer scoring colour and stronger selected state */
+@media (orientation:landscape){
+  .quiz-main .question-controls{
+    margin:20px 0 12px;
+  }
+
+  .score-actions .score-btn{
+    background:#7469c6 !important;
+    color:#fff;
+    border:2px solid #7469c6;
+    box-shadow:0 2px 6px rgba(70,60,140,.10);
+  }
+
+  .score-actions .score-btn.good{
+    background:#40368f !important;
+    border-color:#30266f;
+    color:#fff;
+    transform:translateY(-2px);
+    box-shadow:0 5px 12px rgba(48,38,111,.30);
+    outline:3px solid rgba(64,54,143,.18);
+  }
+}
+
+@media (orientation:landscape) and (max-height:700px){
+  .quiz-main .question-controls{
+    margin:14px 0 9px;
+  }
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v9.3</span></div></header>
+<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v9.4</span></div></header>
 <main id="app" class="screen"></main>
 </div>
 <script type="module" src="./js/app.js"></script>
