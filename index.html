@@ -45,383 +45,364 @@ input[type=file]{display:none}
 .modal{position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center;padding:18px;z-index:10}.modal .card{max-width:650px;width:100%}
 @media(max-width:700px){.answer-grid{grid-template-columns:1fr}.question{font-size:27px}.scorebar{grid-template-columns:repeat(2,1fr)}.card{padding:18px}}
 
-/* Quizmaster v7 — iPad landscape console */
-html, body { height:100%; overflow:hidden; }
-body { overscroll-behavior:none; }
-#app { height:100dvh; overflow:hidden; }
-.container { height:100%; max-width:none; padding:14px 18px; }
-.quiz-layout {
-  height:calc(100dvh - 28px);
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 290px;
-  gap:14px;
-  align-items:stretch;
-}
-.quiz-main {
-  min-width:0;
-  min-height:0;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-}
-.side-board {
-  position:static;
-  height:100%;
-  min-height:0;
-  box-sizing:border-box;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-}
-.side-board h3 { margin:4px 0 14px; font-size:22px; }
-.side-leaders { flex:1; display:flex; flex-direction:column; justify-content:space-evenly; }
-.side-leader {
-  min-height:62px;
-  margin:5px 0;
-  padding:10px 12px;
-  font-size:17px;
-}
-.side-rank { width:30px; font-size:18px; }
-.side-name { font-size:17px; }
-.side-points { font-size:19px; }
-.side-turn { font-size:16px; margin-top:12px; padding:13px; }
 
-.quiz-main .center { flex:0 0 auto; }
-.quiz-main .number-grid {
-  flex:1 1 auto;
-  min-height:0;
-  width:min(88%,760px);
-  margin:18px auto;
-  align-content:stretch;
-  grid-auto-rows:1fr;
-}
-.number-tile {
-  min-height:0;
-  font-size:42px;
-  border-radius:18px;
-}
-.quiz-main .actions { flex:0 0 auto; margin-top:8px; }
-
-.question {
-  flex:0 0 auto;
-  min-height:90px;
-  margin:22px auto 14px;
-  font-size:34px;
-}
-.answer-grid {
-  flex:1 1 auto;
-  min-height:0;
-  width:min(92%,900px);
-  margin:0 auto;
-  align-content:stretch;
-  grid-auto-rows:1fr;
-}
-.answer { min-height:0; font-size:22px; }
-.regular-answer-area {
-  flex:1 1 auto;
-  min-height:0;
-  width:min(92%,900px);
-  margin:0 auto;
-  box-sizing:border-box;
-  display:flex;
-}
-.regular-answer { font-size:30px; }
-.quiz-main > .actions { margin:12px 0; }
-.quiz-main > div[style*="border-top"] {
-  flex:0 0 auto;
-  margin-top:10px !important;
-  padding-top:10px !important;
-}
-.score-actions { gap:12px; }
-.score-actions .score-btn {
-  min-width:140px;
-  min-height:52px;
-  font-size:16px;
-}
-.muted { font-size:14px; }
-
-@media (orientation:landscape) and (max-height:800px) {
-  .container { padding:10px 14px; }
-  .quiz-layout { height:calc(100dvh - 20px); grid-template-columns:minmax(0,1fr) 275px; }
-  .question { margin:14px auto 10px; min-height:70px; font-size:30px; }
-  .number-grid { margin:10px auto; }
-  .number-tile { font-size:36px; }
-  .side-leader { min-height:54px; }
-  .score-actions .score-btn { min-width:125px; min-height:46px; }
-  .quiz-main > .actions { margin:8px 0; }
-}
-@media (orientation:portrait) {
-  html, body { overflow:auto; }
-  #app { height:auto; min-height:100dvh; overflow:visible; }
-  .container { height:auto; }
-  .quiz-layout { height:auto; grid-template-columns:1fr; }
-  .quiz-main, .side-board { height:auto; min-height:0; }
-  .side-board { order:2; }
-  .quiz-main .number-grid { flex:none; }
-}
-
-.landscape-hint{font-size:13px;color:#6b7280;margin-top:10px}
-
-/* v7.1 layout refinements */
-.board-header{display:flex;align-items:center;justify-content:center;flex:0 0 auto;min-height:54px;text-align:center}
-.board-header h1{margin:2px 0 0;font-size:28px}
-.board-header .round{margin:0}
-.side-current{text-align:center;padding:10px 8px;margin:0 0 10px;border-radius:12px;background:#eef2ff;color:#3730a3;font-size:14px}
-.quiz-main .number-grid{display:grid;grid-template-columns:repeat(var(--grid-cols),minmax(0,1fr));grid-auto-rows:minmax(0,1fr);flex:1 1 auto;min-height:0;overflow:hidden}
-.quiz-main .number-tile{width:100%;height:100%;box-sizing:border-box}
-.quiz-main .question{flex:0 0 auto;margin:10px auto 10px;min-height:70px}
-.quiz-main .answer-grid{flex:1 1 0;min-height:0;max-height:none;margin:0 auto 12px;overflow:hidden}
-.quiz-main .regular-answer-area{flex:1 1 0;min-height:0;margin:0 auto 12px;max-height:none;overflow:hidden}
-.quiz-main .actions{flex:0 0 auto;margin:8px 0 12px}
-.quiz-main > div[style*="border-top"]{flex:0 0 auto;margin-top:0 !important;padding-top:10px !important;margin-bottom:0 !important}
-.quiz-main .score-actions{margin-bottom:2px}
-@media (orientation:landscape) and (max-height:800px){
- .board-header{min-height:42px}.board-header h1{font-size:24px}
- .quiz-main .number-grid{margin:8px auto 10px;width:min(92%,780px);gap:12px}
- .quiz-main .number-tile{font-size:34px}
- .quiz-main .question{margin:6px auto 8px;min-height:58px;font-size:28px}
- .quiz-main .answer-grid{margin-bottom:8px}
- .quiz-main .regular-answer-area{margin-bottom:8px}
- .quiz-main .actions{margin:5px 0 8px}
-}
-
-
-/* Quizmaster v8 — iPad game-show layout */
-.quiz-layout{grid-template-columns:minmax(0,1fr) 300px;gap:16px}
-.quiz-main{background:#fff;border-radius:20px}
-.side-board{background:linear-gradient(180deg,#151e3d,#0b122b);border:0;color:#fff;border-radius:20px;padding:20px 18px;box-shadow:0 10px 30px rgba(11,18,43,.18)}
-.side-board h3{color:#fff;font-size:25px;margin:4px 0 14px}
-.side-current{background:linear-gradient(135deg,#6159bd,#5149a8);color:#fff;border:1px solid rgba(255,255,255,.35);font-size:16px;padding:12px 8px}
-.side-leader{background:rgba(255,255,255,.07);color:#fff;border:1px solid transparent;min-height:64px;margin:8px 0;padding:10px 12px}
-.side-leader.current{background:rgba(104,91,255,.18);border:2px solid #7c72ff;outline:none}
-.side-name{color:#fff;font-size:17px}.side-points{color:#9b8cff;font-size:21px}.side-rank{color:#fff}
-.side-board .side-leaders{justify-content:flex-start}
-.board-header{min-height:62px}.board-header h1{font-size:31px}
-.quiz-main .number-grid{width:min(92%,820px);flex:1 1 auto;margin:12px auto 10px;gap:14px}
-.quiz-main .number-tile{border:2px solid #5147f5;background:#f1f2ff;color:#302b91;border-radius:18px;box-shadow:none;font-size:46px}
-.quiz-main .number-tile:hover:not(:disabled){background:#e7e8ff}
-.quiz-main .number-tile.taken{background:#e5e7eb;border-color:#d1d5db;color:#9ca3af}
-.quiz-main .actions{margin:8px 0 6px}
-.quiz-main .actions .btn.primary{background:linear-gradient(135deg,#5147e8,#5c4cf4)}
-.board-footer-hint{text-align:center;color:#6b7280;font-size:14px;margin:0 0 8px}
-.score-panel{background:#f4f2ff;border:1px solid #ddd9ff;border-radius:16px;padding:10px 14px 8px}
-.score-panel-title{text-align:center;font-weight:800;font-size:18px;margin-bottom:8px}
-.score-actions{gap:12px}.score-actions .score-btn{min-width:0;flex:1 1 0;min-height:64px;border-radius:14px;background:#fff;border:1px solid #d9dce8;padding:8px 10px;font-size:16px;font-weight:800}
-.score-actions .score-btn.good{color:#fff;border-color:transparent}
-.score-actions .score-btn:nth-child(1).good{background:#4f46e5}.score-actions .score-btn:nth-child(2).good{background:#10b981}.score-actions .score-btn:nth-child(3).good{background:#f97316}.score-actions .score-btn:nth-child(4).good{background:#2563eb}
-.question{font-size:34px;min-height:64px;margin:12px auto 10px}
-.quiz-main .answer-grid{flex:0 0 330px;height:330px;width:min(92%,900px);gap:14px;margin:0 auto 10px}
-.quiz-main .answer{font-size:22px;border-radius:18px}
-.quiz-main .regular-answer-area{flex:0 0 300px;height:300px;width:min(92%,900px);margin:0 auto 10px;border-radius:18px}
-.quiz-main .regular-answer{font-size:30px}
-.quiz-main > .actions{margin:8px 0 10px}
-.quiz-main > .score-panel{flex:0 0 auto;margin:0}
-.side-next{margin-top:auto;padding-top:14px;border-top:1px solid rgba(255,255,255,.15)}
-.side-next .btn{width:100%;min-height:60px;font-size:20px;background:linear-gradient(135deg,#5147e8,#6b5cf5);color:#fff;border:0}
-@media (orientation:landscape) and (max-height:800px){
- .quiz-layout{grid-template-columns:minmax(0,1fr) 275px}.board-header{min-height:46px}.board-header h1{font-size:26px}
- .quiz-main .number-grid{margin:8px auto;gap:10px}.quiz-main .number-tile{font-size:36px}
- .quiz-main .answer-grid{flex-basis:260px;height:260px}.quiz-main .regular-answer-area{flex-basis:240px;height:240px}
- .question{font-size:28px;min-height:54px;margin:8px auto}.score-actions .score-btn{min-height:50px}
-}
-
-.brand-sub{font-size:.52em;font-weight:700;opacity:.7;white-space:nowrap}.version-badge{display:inline-block;margin-left:8px;padding:3px 8px;border-radius:999px;background:#e9e7ff;color:#4f46e5;font-size:12px;font-weight:800;vertical-align:middle}
-
-/* v8.2 — exact viewport sizing for iPad landscape */
-html,body{height:100%;overflow:hidden}
-.app{height:100dvh;min-height:0;box-sizing:border-box;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 18px env(safe-area-inset-bottom)}
-.top{flex:0 0 auto;height:52px;display:flex;align-items:center}
-.screen{flex:1 1 auto;min-height:0;overflow:hidden}
-.quiz-layout{height:100%;min-height:0}
-.quiz-main{height:100%;min-height:0;overflow:hidden}
-.side-board{height:100%;min-height:0;overflow:hidden}
-.quiz-main .number-grid{min-height:0;overflow:hidden}
-.quiz-main .answer-grid{min-height:0;overflow:hidden}
-.quiz-main .regular-answer-area{min-height:0;overflow:hidden}
-@media (orientation:landscape){
-  .quiz-layout{height:100%}
-}
-@media (orientation:portrait){
-  html,body{overflow:auto}
-  .app{height:auto;min-height:100dvh}
-  .screen{overflow:visible}
-  .quiz-layout{height:auto}
-  .quiz-main,.side-board{height:auto}
-}
-
-
-/* v8.2 — tighter question vertical rhythm */
-@media (orientation:landscape){
-  .quiz-main .answer-grid{flex:0 0 255px;height:255px;margin-bottom:8px}
-  .quiz-main .regular-answer-area{flex:0 0 235px;height:235px;margin-bottom:8px}
-  .quiz-main .question{margin:6px auto 8px;min-height:54px}
-  .quiz-main>.actions{margin:5px 0 7px}
-  .score-panel{padding:8px 12px 6px}
-  .score-panel-title{font-size:17px;margin-bottom:6px}
-  .score-actions .score-btn{min-height:50px}
-}
-
-
-/* Quizmaster v8.3 — true edge-to-edge iPad viewport */
-html,body{
+/* =========================================================
+   Quizmaster v8.5 — authoritative viewport layout
+   The viewport belongs to .app. The header consumes one grid
+   row; .screen receives only the remaining height.
+   ========================================================= */
+html, body {
   width:100%;
   height:100%;
   margin:0;
   overflow:hidden;
 }
-body{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
+
+body {
+  overscroll-behavior:none;
 }
-.app{
+
+.app {
   position:fixed;
   inset:0;
   width:100%;
-  height:100%;
+  height:100dvh;
   min-height:0;
   box-sizing:border-box;
   display:grid;
-  grid-template-rows:58px minmax(0,1fr);
-  padding:8px 18px 8px 18px;
+  grid-template-rows:46px minmax(0,1fr);
   overflow:hidden;
+  padding:6px 14px;
 }
-.top{
+
+.top {
   width:100%;
   max-width:none;
-  height:58px;
+  height:46px;
   min-height:0;
   margin:0;
   padding:0;
   display:flex;
   align-items:center;
+  box-sizing:border-box;
 }
-.screen{
+
+.screen {
   width:100%;
-  max-width:none;
-  height:100%;
+  height:auto;
   min-height:0;
+  max-width:none;
   margin:0;
   overflow:hidden;
+  box-sizing:border-box;
 }
-.quiz-layout{
+
+.quiz-layout {
   width:100%;
   height:100%;
   min-height:0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 280px;
+  gap:12px;
   align-items:stretch;
 }
-.quiz-main,.side-board{
+
+.quiz-main {
+  width:100%;
   height:100%;
+  min-width:0;
   min-height:0;
+  box-sizing:border-box;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
 }
-@media (orientation:portrait){
-  html,body{overflow:auto}
-  body{position:static}
-  .app{
+
+.side-board {
+  width:100%;
+  height:100%;
+  min-width:0;
+  min-height:0;
+  box-sizing:border-box;
+  overflow:hidden;
+  display:grid;
+  grid-template-rows:auto auto minmax(0,1fr) auto;
+}
+
+.board-header {
+  flex:0 0 auto;
+  min-height:44px;
+}
+
+.quiz-main .number-grid {
+  flex:1 1 auto;
+  min-height:0;
+  overflow:hidden;
+}
+
+.quiz-main .answer-grid {
+  flex:1 1 auto;
+  min-height:0;
+  overflow:hidden;
+}
+
+.quiz-main .regular-answer-area {
+  flex:1 1 auto;
+  min-height:0;
+  overflow:hidden;
+}
+
+.side-leaders {
+  min-height:0;
+  overflow:hidden;
+}
+
+.side-next {
+  flex:0 0 auto;
+}
+
+@media (orientation:portrait) {
+  html, body {
+    overflow:auto;
+  }
+
+  body {
+    position:static;
+  }
+
+  .app {
     position:static;
     height:auto;
     min-height:100dvh;
     display:block;
     overflow:visible;
   }
-  .top{height:58px}
-  .screen{height:auto;overflow:visible}
-  .quiz-layout{height:auto}
-  .quiz-main,.side-board{height:auto}
-}
 
+  .top {
+    height:46px;
+  }
 
-/* Quizmaster v8.4 — final iPad landscape sizing */
-@media (orientation:landscape){
-  html,body{width:100%;height:100%;margin:0;overflow:hidden}
-  body{position:fixed;inset:0}
-  .app{
-    position:fixed;inset:0;
-    width:100%;height:100%;
-    padding:6px 14px;
-    display:grid;
-    grid-template-rows:46px minmax(0,1fr);
-    overflow:hidden;
+  .screen {
+    height:auto;
+    overflow:visible;
   }
-  .top{height:46px;min-height:46px;padding:0;margin:0;width:100%;max-width:none}
-  .screen{height:100%;min-height:0;max-width:none;width:100%;margin:0;overflow:hidden}
-  .quiz-layout{
-    width:100%;height:100%;min-height:0;
-    grid-template-columns:minmax(0,1fr) 280px;
-    gap:12px;
-    align-items:stretch;
+
+  .quiz-layout {
+    height:auto;
+    grid-template-columns:1fr;
   }
-  .quiz-main{
-    height:100%;min-height:0;
-    padding:16px;
-    overflow:hidden;
-  }
-  .side-board{
-    height:100%;min-height:0;
-    padding:16px;
-    overflow:hidden;
-    display:grid;
-    grid-template-rows:auto auto minmax(0,1fr) auto;
-  }
-  .side-board h3{margin:0 0 8px}
-  .side-current{margin:0 0 8px}
-  .side-leaders{
+
+  .quiz-main,
+  .side-board {
+    height:auto;
     min-height:0;
-    overflow:hidden;
+  }
+
+  .side-board {
     display:flex;
     flex-direction:column;
-    justify-content:flex-start;
   }
-  .side-leader{min-height:50px;margin:4px 0;flex:0 0 auto}
-  .side-next{
-    position:static;
-    margin:8px 0 0;
-    padding:8px 0 0;
-  }
-  .side-next .btn{min-height:52px}
-  .board-header{min-height:44px}
-  .board-header h1{font-size:26px;margin:0}
-  .quiz-main .number-grid{
-    min-height:0;
-    height:auto;
-    flex:1 1 auto;
-    margin:8px auto;
-    gap:10px;
-  }
-  .quiz-main .number-tile{font-size:36px}
-  .quiz-main .actions{margin:4px 0}
-  .board-footer-hint{margin:0 0 2px}
-  .question{font-size:28px;min-height:50px;margin:4px auto 6px}
-  .quiz-main .answer-grid{
-    flex:1 1 auto;
-    height:auto;
-    min-height:0;
-    margin:0 auto 6px;
-    gap:10px;
-  }
-  .quiz-main .regular-answer-area{
-    flex:1 1 auto;
-    height:auto;
-    min-height:0;
-    margin:0 auto 6px;
-  }
-  .quiz-main > .actions{margin:4px 0 6px}
-  .score-panel{
-    flex:0 0 auto;
-    padding:7px 10px 5px;
-  }
-  .score-panel-title{font-size:16px;margin-bottom:5px}
-  .score-actions{gap:8px}
-  .score-actions .score-btn{min-height:46px}
 }
 
+/* v8.5 visual sizing */
+.version-badge {
+  display:inline-block;
+  margin-left:8px;
+  padding:3px 8px;
+  border-radius:999px;
+  background:#e9e7ff;
+  color:#4f46e5;
+  font-size:12px;
+  font-weight:800;
+  vertical-align:middle;
+}
+
+.side-board {
+  background:linear-gradient(180deg,#151e3d,#0b122b);
+  border:0;
+  color:#fff;
+  border-radius:20px;
+  padding:16px;
+  box-shadow:0 10px 30px rgba(11,18,43,.18);
+}
+
+.side-board h3 {
+  color:#fff;
+  font-size:24px;
+  margin:0 0 8px;
+}
+
+.side-current {
+  background:linear-gradient(135deg,#6159bd,#5149a8);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.35);
+  padding:10px 8px;
+  margin:0 0 8px;
+}
+
+.side-leaders {
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+}
+
+.side-leader {
+  background:rgba(255,255,255,.07);
+  color:#fff;
+  border:1px solid transparent;
+  min-height:50px;
+  margin:4px 0;
+  padding:9px 10px;
+}
+
+.side-leader.current {
+  background:rgba(104,91,255,.18);
+  border:2px solid #7c72ff;
+}
+
+.side-name { color:#fff; }
+.side-points { color:#9b8cff; }
+
+.side-next {
+  margin:8px 0 0;
+  padding:8px 0 0;
+  border-top:1px solid rgba(255,255,255,.15);
+}
+
+.side-next .btn {
+  width:100%;
+  min-height:52px;
+  font-size:19px;
+  background:linear-gradient(135deg,#5147e8,#6b5cf5);
+  color:#fff;
+  border:0;
+}
+
+.board-header {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.board-header h1 {
+  font-size:26px;
+  margin:0;
+}
+
+.quiz-main .number-grid {
+  width:min(92%,820px);
+  margin:8px auto;
+  gap:10px;
+  grid-auto-rows:minmax(0,1fr);
+}
+
+.quiz-main .number-tile {
+  min-height:0;
+  width:100%;
+  height:100%;
+  box-sizing:border-box;
+  font-size:36px;
+  border:2px solid #5147f5;
+  background:#f1f2ff;
+  color:#302b91;
+  border-radius:18px;
+}
+
+.quiz-main .number-tile.taken {
+  background:#e5e7eb;
+  border-color:#d1d5db;
+  color:#9ca3af;
+}
+
+.board-footer-hint {
+  text-align:center;
+  color:#6b7280;
+  font-size:13px;
+  margin:0 0 2px;
+}
+
+.quiz-main .actions {
+  flex:0 0 auto;
+  margin:4px 0;
+}
+
+.question {
+  font-size:28px;
+  min-height:50px;
+  margin:4px auto 6px;
+}
+
+.quiz-main .answer-grid {
+  width:min(92%,900px);
+  margin:0 auto 6px;
+  gap:10px;
+}
+
+.quiz-main .answer {
+  min-height:0;
+  border-radius:18px;
+  font-size:22px;
+}
+
+.quiz-main .regular-answer-area {
+  width:min(92%,900px);
+  margin:0 auto 6px;
+  border-radius:18px;
+}
+
+.quiz-main .regular-answer {
+  font-size:30px;
+}
+
+.score-panel {
+  flex:0 0 auto;
+  background:#f4f2ff;
+  border:1px solid #ddd9ff;
+  border-radius:16px;
+  padding:7px 10px 5px;
+  margin:0;
+}
+
+.score-panel-title {
+  text-align:center;
+  font-weight:800;
+  font-size:16px;
+  margin-bottom:5px;
+}
+
+.score-actions {
+  gap:8px;
+}
+
+.score-actions .score-btn {
+  min-width:0;
+  flex:1 1 0;
+  min-height:46px;
+  border-radius:14px;
+  padding:7px 8px;
+}
+
+@media (max-height:700px) and (orientation:landscape) {
+  .app {
+    grid-template-rows:40px minmax(0,1fr);
+    padding-top:3px;
+    padding-bottom:3px;
+  }
+  .top { height:40px; }
+  .board-header { min-height:38px; }
+  .board-header h1 { font-size:23px; }
+  .quiz-main .number-grid { margin:5px auto; gap:8px; }
+  .quiz-main .number-tile { font-size:32px; }
+  .question { font-size:25px; min-height:44px; margin:3px auto 5px; }
+  .score-panel { padding:5px 8px 4px; }
+  .score-actions .score-btn { min-height:42px; }
+}
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">🎯 Quizmaster <small>JSON Edition</small><span class="version-badge">v8.4</span></div></header>
+<header class="top"><div class="brand">🎯 Quizmaster <small>JSON Edition</small><span class="version-badge">v8.5</span></div></header>
 <main id="app" class="screen"></main>
 </div>
 <script>
