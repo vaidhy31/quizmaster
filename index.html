@@ -332,11 +332,96 @@ body{
   .quiz-main,.side-board{height:auto}
 }
 
+
+/* Quizmaster v8.4 — final iPad landscape sizing */
+@media (orientation:landscape){
+  html,body{width:100%;height:100%;margin:0;overflow:hidden}
+  body{position:fixed;inset:0}
+  .app{
+    position:fixed;inset:0;
+    width:100%;height:100%;
+    padding:6px 14px;
+    display:grid;
+    grid-template-rows:46px minmax(0,1fr);
+    overflow:hidden;
+  }
+  .top{height:46px;min-height:46px;padding:0;margin:0;width:100%;max-width:none}
+  .screen{height:100%;min-height:0;max-width:none;width:100%;margin:0;overflow:hidden}
+  .quiz-layout{
+    width:100%;height:100%;min-height:0;
+    grid-template-columns:minmax(0,1fr) 280px;
+    gap:12px;
+    align-items:stretch;
+  }
+  .quiz-main{
+    height:100%;min-height:0;
+    padding:16px;
+    overflow:hidden;
+  }
+  .side-board{
+    height:100%;min-height:0;
+    padding:16px;
+    overflow:hidden;
+    display:grid;
+    grid-template-rows:auto auto minmax(0,1fr) auto;
+  }
+  .side-board h3{margin:0 0 8px}
+  .side-current{margin:0 0 8px}
+  .side-leaders{
+    min-height:0;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+  }
+  .side-leader{min-height:50px;margin:4px 0;flex:0 0 auto}
+  .side-next{
+    position:static;
+    margin:8px 0 0;
+    padding:8px 0 0;
+  }
+  .side-next .btn{min-height:52px}
+  .board-header{min-height:44px}
+  .board-header h1{font-size:26px;margin:0}
+  .quiz-main .number-grid{
+    min-height:0;
+    height:auto;
+    flex:1 1 auto;
+    margin:8px auto;
+    gap:10px;
+  }
+  .quiz-main .number-tile{font-size:36px}
+  .quiz-main .actions{margin:4px 0}
+  .board-footer-hint{margin:0 0 2px}
+  .question{font-size:28px;min-height:50px;margin:4px auto 6px}
+  .quiz-main .answer-grid{
+    flex:1 1 auto;
+    height:auto;
+    min-height:0;
+    margin:0 auto 6px;
+    gap:10px;
+  }
+  .quiz-main .regular-answer-area{
+    flex:1 1 auto;
+    height:auto;
+    min-height:0;
+    margin:0 auto 6px;
+  }
+  .quiz-main > .actions{margin:4px 0 6px}
+  .score-panel{
+    flex:0 0 auto;
+    padding:7px 10px 5px;
+  }
+  .score-panel-title{font-size:16px;margin-bottom:5px}
+  .score-actions{gap:8px}
+  .score-actions .score-btn{min-height:46px}
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">🎯 Quizmaster <small>JSON Edition</small><span class="version-badge">v8.2</span></div></header>
+<header class="top"><div class="brand">🎯 Quizmaster <small>JSON Edition</small><span class="version-badge">v8.4</span></div></header>
 <main id="app" class="screen"></main>
 </div>
 <script>
