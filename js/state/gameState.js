@@ -7,7 +7,7 @@ export function createInitialGame(teamCount = 0, roundCount = 0) {
     scores: Array(teamCount).fill(0),
     selected: null,
     revealed: false,
-    currentAwards: new Set(),
+    currentAwards: new Map(),
     currentTeam: 0,
     usedQuestions: Array.from({ length: roundCount }, () => new Set()),
     leaderMode: "view"

@@ -181,7 +181,7 @@ function chooseQuestion(index) {
   game.q = index;
   game.selected = null;
   game.revealed = false;
-  game.currentAwards = new Set();
+  game.currentAwards = new Map();
   game.screen = "play";
   render();
 }
@@ -198,14 +198,16 @@ function reveal() {
   render();
 }
 
-function toggleScore(teamIndex) {
+function setScore(teamIndex, multiplier) {
   const points = currentQuestion().points || 10;
-  if (game.currentAwards.has(teamIndex)) {
+  const previous = game.currentAwards.get(teamIndex) || 0;
+
+  if (previous === multiplier) {
     game.currentAwards.delete(teamIndex);
-    game.scores[teamIndex] -= points;
+    game.scores[teamIndex] -= points * previous;
   } else {
-    game.currentAwards.add(teamIndex);
-    game.scores[teamIndex] += points;
+    game.currentAwards.set(teamIndex, multiplier);
+    game.scores[teamIndex] += points * multiplier - points * previous;
   }
   render();
 }
@@ -214,7 +216,7 @@ function finishQuestion() {
   game.q = null;
   game.selected = null;
   game.revealed = false;
-  game.currentAwards = new Set();
+  game.currentAwards = new Map();
   game.currentTeam = (game.currentTeam + 1) % quiz.teams.length;
   game.screen = "board";
   game.leaderMode = "view";
@@ -232,7 +234,7 @@ function advanceRound() {
   game.currentTeam = game.round % quiz.teams.length;
   game.selected = null;
   game.revealed = false;
-  game.currentAwards = new Set();
+  game.currentAwards = new Map();
   game.screen = "board";
   game.leaderMode = "view";
   render();
@@ -278,7 +280,9 @@ app.addEventListener("click", event => {
     case "choose-question": chooseQuestion(Number(target.dataset.question)); break;
     case "select-answer": selectAnswer(Number(target.dataset.answer)); break;
     case "reveal": reveal(); break;
-    case "toggle-score": toggleScore(Number(target.dataset.team)); break;
+    case "set-score":
+      setScore(Number(target.dataset.team), Number(target.dataset.multiplier));
+      break;
     case "finish-question": finishQuestion(); break;
     case "next-round":
       game.screen = "leader";

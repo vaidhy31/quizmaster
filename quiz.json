@@ -125,5 +125,11 @@
         }
       ]
     }
-  ]
+  ],
+  "teamTypes": {
+    "Team A": "adult",
+    "Team B": "adult",
+    "Team C": "adult",
+    "Team D": "adult"
+  }
 }
