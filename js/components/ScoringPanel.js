@@ -11,8 +11,8 @@ export function renderScoringPanel(quiz, game, points) {
           const child = multiplier === 2;
           return `
             <div class="btn score-btn ${selected ? "good" : ""}">
-              <span>${esc(team)}</span>
-              <span class="score-mode">
+              <span class="score-team-name">${esc(team)}</span>
+              <div class="score-mode">
                 <button type="button"
                   class="score-mode-btn ${selected && !child ? "selected" : ""}"
                   data-action="set-score"
@@ -23,9 +23,9 @@ export function renderScoringPanel(quiz, game, points) {
                   data-action="set-score"
                   data-team="${index}"
                   data-multiplier="2">Child 2×</button>
-              </span>
+              </div>
               ${selected ? `<span class="score-points">+${points * multiplier}</span>` : ""}
-            </button>`;
+            </div>`;
         }).join("")}
       </div>
       <div class="muted" style="text-align:center;font-size:12px;margin-top:5px">
