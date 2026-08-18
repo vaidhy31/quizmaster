@@ -933,11 +933,41 @@ body {
   }
 }
 
+
+/* v9.9 — scoring cards are explicit siblings */
+@media (orientation:landscape){
+  .score-actions{
+    display:flex !important;
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    align-items:stretch !important;
+    justify-content:space-between !important;
+    gap:8px !important;
+    width:100% !important;
+  }
+
+  .score-actions > .score-btn{
+    flex:1 1 0 !important;
+    width:auto !important;
+    min-width:0 !important;
+    max-width:none !important;
+    margin:0 !important;
+  }
+
+  .score-btn{
+    box-sizing:border-box !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v9.8</span></div></header>
+<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v9.9</span></div></header>
 <main id="app" class="screen"></main>
 </div>
 <script type="module" src="./js/app.js"></script>
