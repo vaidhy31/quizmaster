@@ -617,11 +617,63 @@ body {
   .quiz-main .question-type-layout > .regular-answer-area{flex-basis:calc(60% - 7px)}
 }
 
+
+/* v9.3 — question backgrounds, single-colour scoring, and edge-safe spacing */
+@media (orientation:landscape){
+  .quiz-main .question-type-layout{
+    flex:1 1 auto;min-height:0;min-width:0;width:100%;
+    display:flex;flex-direction:column;overflow:visible;padding:0;
+  }
+  .quiz-main .question-type-layout > .question{
+    flex:0 0 40%;height:auto;min-height:0;width:100%;
+    margin:0 0 10px;box-sizing:border-box;
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:14px 28px;border-radius:16px;
+    background:linear-gradient(135deg,#f4f2ff,#eef3ff);
+    border:1px solid #dedcff;
+  }
+  .quiz-main .question-type-layout > .answer-grid,
+  .quiz-main .question-type-layout > .regular-answer-area{
+    flex:0 0 calc(60% - 10px);height:auto;min-height:0;box-sizing:border-box;
+  }
+  .quiz-main .question-type-layout > .answer-grid{
+    width:calc(100% - 16px);margin:0 8px;padding:6px 0 10px;
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-rows:repeat(2,minmax(0,1fr));gap:10px;overflow:visible;
+  }
+  .quiz-main .question-type-layout > .answer-grid .answer{
+    width:100%;height:100%;min-width:0;min-height:0;box-sizing:border-box;
+  }
+  .quiz-main .question-type-layout > .regular-answer-area{
+    width:calc(100% - 16px);margin:0 8px;padding:20px;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid #d8dbe7;box-sizing:border-box;overflow:visible;
+  }
+  .quiz-main .question-controls{flex:0 0 auto;margin:14px 0 12px;}
+  .quiz-main .question-controls .btn{width:100%}
+  .quiz-main .score-panel{flex:0 0 auto;margin:0}
+  .score-actions .score-btn{
+    background:#5146e5 !important;color:#fff;border:0;
+    box-shadow:0 3px 8px rgba(79,70,229,.18);
+  }
+  .score-actions .score-btn.good{
+    background:#5146e5 !important;color:#fff;transform:translateY(-2px);
+    box-shadow:0 5px 12px rgba(79,70,229,.28);
+    outline:3px solid rgba(255,255,255,.9);
+  }
+}
+@media (orientation:landscape) and (max-height:700px){
+  .quiz-main .question-type-layout > .question{padding:8px 20px;margin-bottom:7px}
+  .quiz-main .question-type-layout > .answer-grid,
+  .quiz-main .question-type-layout > .regular-answer-area{flex-basis:calc(60% - 7px)}
+  .quiz-main .question-controls{margin:9px 0 8px}
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v9.2</span></div></header>
+<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v9.3</span></div></header>
 <main id="app" class="screen"></main>
 </div>
 <script type="module" src="./js/app.js"></script>
