@@ -226,12 +226,47 @@ body { overscroll-behavior:none; }
  .question{font-size:28px;min-height:54px;margin:8px auto}.score-actions .score-btn{min-height:50px}
 }
 
-.brand-sub{font-size:.52em;font-weight:700;opacity:.7;white-space:nowrap}
+.brand-sub{font-size:.52em;font-weight:700;opacity:.7;white-space:nowrap}.version-badge{display:inline-block;margin-left:8px;padding:3px 8px;border-radius:999px;background:#e9e7ff;color:#4f46e5;font-size:12px;font-weight:800;vertical-align:middle}
+
+/* v8.2 — exact viewport sizing for iPad landscape */
+html,body{height:100%;overflow:hidden}
+.app{height:100dvh;min-height:0;box-sizing:border-box;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 18px env(safe-area-inset-bottom)}
+.top{flex:0 0 auto;height:52px;display:flex;align-items:center}
+.screen{flex:1 1 auto;min-height:0;overflow:hidden}
+.quiz-layout{height:100%;min-height:0}
+.quiz-main{height:100%;min-height:0;overflow:hidden}
+.side-board{height:100%;min-height:0;overflow:hidden}
+.quiz-main .number-grid{min-height:0;overflow:hidden}
+.quiz-main .answer-grid{min-height:0;overflow:hidden}
+.quiz-main .regular-answer-area{min-height:0;overflow:hidden}
+@media (orientation:landscape){
+  .quiz-layout{height:100%}
+}
+@media (orientation:portrait){
+  html,body{overflow:auto}
+  .app{height:auto;min-height:100dvh}
+  .screen{overflow:visible}
+  .quiz-layout{height:auto}
+  .quiz-main,.side-board{height:auto}
+}
+
+
+/* v8.2 — tighter question vertical rhythm */
+@media (orientation:landscape){
+  .quiz-main .answer-grid{flex:0 0 255px;height:255px;margin-bottom:8px}
+  .quiz-main .regular-answer-area{flex:0 0 235px;height:235px;margin-bottom:8px}
+  .quiz-main .question{margin:6px auto 8px;min-height:54px}
+  .quiz-main>.actions{margin:5px 0 7px}
+  .score-panel{padding:8px 12px 6px}
+  .score-panel-title{font-size:17px;margin-bottom:6px}
+  .score-actions .score-btn{min-height:50px}
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">🎯 Quizmaster <small>JSON Edition</small></div></header>
+<header class="top"><div class="brand">🎯 Quizmaster <small>JSON Edition</small><span class="version-badge">v8.2</span></div></header>
 <main id="app" class="screen"></main>
 </div>
 <script>

@@ -1,1 +1,1 @@
-Quizmaster v8.1 — version number added to the header. Replace all GitHub Pages files with this folder.
+Quizmaster v8.2 — visible version badge and corrected iPad landscape viewport/bottom spacing. Replace all GitHub Pages files.
