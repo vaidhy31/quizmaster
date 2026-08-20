@@ -1,7 +1,7 @@
 import { esc } from "../utils/helpers.js";
 
 function imageUrl(question, game) {
-  return new URL(question.image, game.quiz.assetBase).href;
+  return new URL(question.image, question.assetBase).href;
 }
 
 function fullImage(question, game, className = "image-identification-full") {

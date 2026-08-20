@@ -27,21 +27,23 @@ function render() {
 
 function renderHome() {
   const cards = quizCatalog.map(item => `
-    <button class="quiz-choice" data-action="select-quiz" data-quiz-id="${esc(item.id)}">
+    <button class="quiz-choice ${selectedQuizId === item.id ? "selected" : ""}" data-action="select-quiz" data-quiz-id="${esc(item.id)}">
       <strong>${esc(item.name)}</strong>
-      <span>${quiz && selectedQuizId === item.id ? "Loaded" : "Select quiz"}</span>
+      <span>${selectedQuizId === item.id ? "Selected" : "Select quiz"}</span>
     </button>`).join("");
 
   app.innerHTML = `<div class="card center">
     ${renderBrand("hero")}
-    ${quiz
-      ? `<h2>${esc(quiz.name)}</h2>
-         <p>${quiz.rounds.length} rounds · ${quiz.rounds.reduce((n,r) => n + r.questions.length, 0)} questions</p>
-         <div class="actions">
-           <button class="btn primary big" data-action="open-setup">▶ Start Quiz</button>
-         </div>`
-      : `<p class="muted">Choose a quiz to begin.</p>`}
+    <h2>Select a Quiz</h2>
+    <p class="muted">Choose the quiz you want to play.</p>
     <div class="quiz-catalog">${cards || `<p class="muted">No quizzes are available.</p>`}</div>
+    ${quiz ? `<div class="selected-quiz-summary">
+      <strong>${esc(quiz.name)}</strong>
+      <span>${quiz.rounds.length} rounds · ${quiz.rounds.reduce((n,r) => n + r.questions.length, 0)} questions</span>
+      <div class="actions">
+        <button class="btn primary big" data-action="open-setup">▶ Start Quiz</button>
+      </div>
+    </div>` : ""}
     <p class="landscape-hint">For the best experience, use the iPad in landscape.</p>
   </div>`;
 }
@@ -351,18 +353,20 @@ function goHome() {
 
 async function reloadQuiz() {
   try {
-    quizCatalog = await loadQuizCatalog();
-    if (selectedQuizId) {
-      const item = quizCatalog.find(q => q.id === selectedQuizId);
-      if (item) quiz = await loadQuiz(new URL(item.path, new URL("./quizzes/index.json", window.location.href)).href);
-    }
+    const catalog = await loadQuizCatalog();
+    quizCatalog = catalog.quizzes;
+    // QuizTime always opens at the catalog. A quiz is loaded only after
+    // the user explicitly selects it.
+    quiz = null;
+    selectedQuizId = null;
+    game = createGameForQuiz({ teams: [], rounds: [] });
     render();
   } catch (error) {
     app.innerHTML = `<div class="card center">
       <div style="font-size:54px">⚠️</div>
       <h2>Could not load the quiz catalog</h2>
       <p>${esc(error.message)}</p>
-      <p class="muted">Make sure quizzes/index.json and the quiz folders are present.</p>
+      <p class="muted">Make sure the quizzes folder and quiz modules are present.</p>
       <div class="actions"><button class="btn primary" data-action="reload-quiz">Try Again</button></div>
     </div>`;
   }
@@ -372,8 +376,7 @@ async function selectQuiz(id) {
   const item = quizCatalog.find(q => q.id === id);
   if (!item) return;
   try {
-    const quizUrl = new URL(item.path, new URL("./quizzes/index.json", window.location.href)).href;
-    quiz = await loadQuiz(quizUrl);
+    quiz = loadQuiz(item);
     selectedQuizId = id;
     game = createGameForQuiz(quiz);
     render();

@@ -28,14 +28,13 @@ export function validateQuiz(x) {
   });
 }
 
-export async function loadQuiz(path) {
-  const response = await fetch(path, { cache: "no-store" });
-  if (!response.ok) throw new Error(`${path} could not be loaded`);
-  const quiz = await response.json();
+export function loadQuiz(entry) {
+  if (!entry || !entry.quiz) throw new Error("Invalid quiz catalog entry.");
+  const quiz = structuredClone(entry.quiz);
   validateQuiz(quiz);
-
-  // Keep quiz asset paths relative to the quiz.json file.
-  const base = new URL(".", new URL(path, window.location.href)).href;
-  quiz.assetBase = base;
+  quiz.assetBase = entry.assetBase;
+  quiz.rounds.forEach(round => round.questions.forEach(question => {
+    question.assetBase = entry.assetBase;
+  }));
   return quiz;
 }
