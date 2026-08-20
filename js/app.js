@@ -128,37 +128,18 @@ function renderFullLeaderboard() {
     .sort((a,b) => b.score - a.score);
   const advancing = game.leaderMode === "roundEnd";
   const isFinal = game.round + 1 >= quiz.rounds.length;
-  const finalSequence = game.leaderMode === "finalSequence";
 
-  if (finalSequence) {
-    app.innerHTML = `<div class="final-screen">
-      <div class="final-card">
-        <div class="final-trophy">🏆</div>
-        <div class="final-kicker">QUIZ COMPLETE</div>
-        <h1>Final Scores</h1>
-        <div class="final-leaderboard">
-          ${sorted.map((item, position) => `
-            <div class="final-row final-row-${position + 1}">
-              <div class="final-rank">${["🥇","🥈","🥉"][position] || position + 1}</div>
-              <div class="final-name">${esc(quiz.teams[item.index])}</div>
-              <div class="final-points"><span class="count-score" data-score="${item.score}">0</span></div>
-            </div>`).join("")}
-        </div>
-        <div class="actions final-actions">
-          <button class="btn primary big" data-action="home-after-final">Done</button>
-        </div>
-      </div>
-    </div>`;
-
-    requestAnimationFrame(() => startFinalSequence(sorted));
-    return;
+  // The final round goes directly to the animated celebration.
+  if (advancing && isFinal) {
+    game.leaderMode = "finalSequence";
+    return renderFinalSequence(sorted);
   }
 
   app.innerHTML = `<div class="card">
     <div class="center">
       <div style="font-size:58px">🏆</div>
-      <h1>${advancing ? (isFinal ? "Final Scores" : `Round ${game.round + 1} Complete`) : "Leaderboard"}</h1>
-      <p>${advancing ? (isFinal ? "The quiz is complete." : "Here are the scores before the next round.") : "Current standings"}</p>
+      <h1>${advancing ? `Round ${game.round + 1} Complete` : "Leaderboard"}</h1>
+      <p>${advancing ? "Here are the scores before the next round." : "Current standings"}</p>
     </div>
     ${sorted.map((item, position) => `
       <div class="leader">
@@ -168,15 +149,34 @@ function renderFullLeaderboard() {
       </div>`).join("")}
     <div class="actions">
       ${advancing
-        ? (isFinal
-          ? `<button class="btn primary big" data-action="show-final">Final Scores</button>`
-          : `<button class="btn primary big" data-action="advance-round">Next Round →</button>`)
+        ? `<button class="btn primary big" data-action="advance-round">Next Round →</button>`
         : `<button class="btn" data-action="back-to-round">← Back to Round</button>`}
       <button class="btn danger" data-action="reset-game">Reset Game</button>
       <button class="btn" data-action="go-home">Home</button>
     </div>
   </div>`;
 }
+
+function renderFinalSequence(sorted) {
+  app.innerHTML = `<div class="final-screen">
+    <div class="final-card">
+      <div class="final-trophy">🏆</div>
+      <div class="final-kicker">QUIZ COMPLETE</div>
+      <h1>Final Scores</h1>
+      <div class="final-leaderboard">
+        ${sorted.map((item, position) => `
+          <div class="final-row final-row-${position + 1}">
+            <div class="final-rank">${["🥇","🥈","🥉"][position] || position + 1}</div>
+            <div class="final-name">${esc(quiz.teams[item.index])}</div>
+            <div class="final-points"><span class="count-score" data-score="${item.score}">0</span></div>
+          </div>`).join("")}
+      </div>
+    </div>
+  </div>`;
+
+  requestAnimationFrame(() => startFinalSequence(sorted));
+}
+
 
 function startFinalSequence(sorted) {
   // Start browser-generated fireworks/audio from the same user gesture chain.
@@ -366,7 +366,6 @@ app.addEventListener("click", event => {
     case "remove-team": removeTeam(); break;
     case "start-game": startGame(); break;
     case "go-home": goHome(); break;
-    case "home-after-final": stopFireworks(); goHome(); break;
     case "choose-question": chooseQuestion(Number(target.dataset.question)); break;
     case "select-answer": selectAnswer(Number(target.dataset.answer)); break;
     case "reveal": reveal(); break;
@@ -380,7 +379,12 @@ app.addEventListener("click", event => {
       render();
       break;
     case "advance-round": advanceRound(); break;
-    case "show-final": game.leaderMode = "finalSequence"; render(); break;
+    case "show-final": {
+      const sorted = game.scores.map((score, index) => ({ score, index })).sort((a,b) => b.score - a.score);
+      game.leaderMode = "finalSequence";
+      renderFinalSequence(sorted);
+      break;
+    }
     case "back-to-round": game.screen = "board"; render(); break;
     case "reset-game":
       if (confirm("Reset scores and start again?")) resetGame();

@@ -1454,11 +1454,23 @@ body {
   100%{opacity:1;transform:scale(1) rotate(0)}
 }
 
+
+/* v10.10 — final celebration is a button-free destination */
+.final-screen{
+  width:100%;
+  height:100%;
+  min-height:0;
+  box-sizing:border-box;
+}
+.final-card{
+  pointer-events:none;
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v10.9</span></div></header>
+<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v10.10</span></div></header>
 <main id="app" class="screen"></main>
 </div>
 <script type="module" src="./js/app.js"></script>
