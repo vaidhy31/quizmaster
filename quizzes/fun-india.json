@@ -1,11 +1,5 @@
 {
   "name": "Fun India Quiz",
-  "teams": [
-    "Team A",
-    "Team B",
-    "Team C",
-    "Team D"
-  ],
   "rounds": [
     {
       "name": "General Knowledge",

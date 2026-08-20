@@ -2822,6 +2822,62 @@ button[data-action="next-round"]:focus{
   }
 }
 
+
+/* v1.5 — multiple quiz selection on the home screen */
+.quiz-selector{
+  width:min(620px,100%);
+  margin:20px auto 12px;
+  text-align:left;
+}
+.quiz-selector label{
+  display:block;
+  margin-bottom:7px;
+  font-weight:800;
+  color:#17365d;
+}
+.quiz-selector select{
+  width:100%;
+  min-height:52px;
+  padding:12px 42px 12px 14px;
+  border:1px solid #cbd5e1;
+  border-radius:14px;
+  background:#f8fafc;
+  color:#17365d;
+  font-size:18px;
+  font-weight:700;
+}
+.quiz-summary{
+  width:min(620px,100%);
+  margin:16px auto 0;
+  padding:18px;
+  border:1px solid #dbe3ea;
+  border-radius:16px;
+  background:#f8fafc;
+}
+.quiz-summary h3{
+  margin:0 0 7px;
+  color:#17365d;
+}
+.quiz-summary p{
+  margin:0;
+  color:#5f6b7a;
+}
+.quiz-meta{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+.quiz-meta span{
+  padding:6px 10px;
+  border-radius:999px;
+  background:#e8eef5;
+  color:#17365d;
+  font-size:13px;
+  font-weight:800;
+}
+
 </style>
 </head>
 <body>
@@ -2834,7 +2890,7 @@ button[data-action="next-round"]:focus{
       <span class="quiztime-word quiztime-time">TIME</span>
     </div>
   </div>
-  <span class="version-badge">v1.0</span>
+  <span class="version-badge">v1.5</span>
 </header>
 <main id="app" class="screen"></main>
 </div>

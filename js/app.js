@@ -1,6 +1,6 @@
 
 import { createGameForQuiz } from "./state/gameState.js";
-import { loadQuiz as fetchQuiz } from "./data/quizLoader.js";
+import { loadAppData, loadQuiz as fetchQuiz } from "./data/quizLoader.js";
 import { esc } from "./utils/helpers.js";
 import { renderLeaderboard } from "./components/Leaderboard.js";
 import { renderScoringPanel } from "./components/ScoringPanel.js";
@@ -10,7 +10,9 @@ import { renderBrand } from "./components/Brand.js";
 import { startFireworks, stopFireworks } from "./effects/fireworks.js";
 
 const app = document.getElementById("app");
+let appData = null;
 let quiz = null;
+let selectedQuizId = null;
 let game = createGameForQuiz({ teams: [], rounds: [] });
 
 function render() {
@@ -22,24 +24,58 @@ function render() {
   renderHome();
 }
 
+function getSelectedQuizEntry() {
+  return appData?.quizzes?.find(item => item.id === selectedQuizId)
+    || appData?.quizzes?.find(item => item.id === appData.defaultQuizId)
+    || appData?.quizzes?.[0]
+    || null;
+}
+
 function renderHome() {
-  app.innerHTML = `<div class="card center">
+  const selected = getSelectedQuizEntry();
+
+  if (!appData) {
+    app.innerHTML = `<div class="card center">
+      ${renderBrand("hero")}
+      <p>Loading quizzes…</p>
+    </div>`;
+    return;
+  }
+
+  app.innerHTML = `<div class="card center quiz-home">
     ${renderBrand("hero")}
-    ${quiz
-      ? `<h2>${esc(quiz.name)}</h2>
-         <p>${quiz.rounds.length} rounds · ${quiz.rounds.reduce((n,r) => n + r.questions.length, 0)} questions</p>
-         <div class="actions">
-           <button class="btn primary big" data-action="open-setup">▶ Start Quiz</button>
-           <button class="btn" data-action="reload-quiz">Reload Quiz</button>
-         </div>`
-      : `<p>Loading quiz…</p>
-         <p class="muted">Quiz content is loaded from <strong>quiz.json</strong>.</p>
-         <p class="landscape-hint">For the best experience, use the iPad in landscape.</p>`}
+    <h2>Choose a Quiz</h2>
+
+    <div class="quiz-selector">
+      <label for="quizSelect">Quiz</label>
+      <select id="quizSelect">
+        ${appData.quizzes.map(item => `
+          <option value="${esc(item.id)}" ${item.id === selected?.id ? "selected" : ""}>
+            ${esc(item.name)}
+          </option>`).join("")}
+      </select>
+    </div>
+
+    ${selected ? `
+      <div class="quiz-summary">
+        <h3>${esc(selected.name)}</h3>
+        <p>${esc(selected.description || "")}</p>
+        <div class="quiz-meta">
+          <span>${selected.rounds} rounds</span>
+          <span>${selected.questions} questions</span>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn primary big" data-action="open-setup">▶ Start Quiz</button>
+      </div>
+    ` : `
+      <p class="muted">No quizzes are available.</p>
+    `}
   </div>`;
 }
 
 function renderSetup() {
-  const teams = quiz.teams || ["Team A", "Team B", "Team C", "Team D"];
+  const teams = quiz.teams || appData.defaultTeams || ["Team A", "Team B", "Team C", "Team D"];
   app.innerHTML = `<div class="card">
     <h2>Quiz Setup</h2>
     <h3>${esc(quiz.name)}</h3>
@@ -341,28 +377,62 @@ function goHome() {
   render();
 }
 
-async function reloadQuiz() {
+async function loadApplication() {
   try {
-    quiz = await fetchQuiz();
+    appData = await loadAppData();
+    selectedQuizId = appData.defaultQuizId || appData.quizzes[0]?.id || null;
+    quiz = null;
     render();
   } catch (error) {
     app.innerHTML = `<div class="card center">
       <div style="font-size:54px">⚠️</div>
-      <h2>Could not load the quiz</h2>
+      <h2>Could not load QuizTime</h2>
       <p>${esc(error.message)}</p>
-      <p class="muted">Make sure quiz.json is in the same folder as the app.</p>
-      <div class="actions"><button class="btn primary" data-action="reload-quiz">Try Again</button></div>
+      <p class="muted">Make sure app.json and the quizzes folder are available.</p>
+      <div class="actions">
+        <button class="btn primary" data-action="reload-app">Try Again</button>
+      </div>
     </div>`;
   }
 }
+
+async function startSelectedQuiz() {
+  const entry = getSelectedQuizEntry();
+  if (!entry) return;
+
+  try {
+    quiz = await fetchQuiz(entry);
+    quiz.name = quiz.name || entry.name;
+    quiz.teams = [...(appData.defaultTeams || ["Team A", "Team B", "Team C", "Team D"])];
+    game = createGameForQuiz(quiz);
+    game.screen = "setup";
+    render();
+  } catch (error) {
+    app.innerHTML = `<div class="card center">
+      <div style="font-size:54px">⚠️</div>
+      <h2>Could not load the selected quiz</h2>
+      <p>${esc(error.message)}</p>
+      <div class="actions">
+        <button class="btn" data-action="go-home">Back to Quiz Selection</button>
+      </div>
+    </div>`;
+  }
+}
+
+app.addEventListener("change", event => {
+  if (event.target.id === "quizSelect") {
+    selectedQuizId = event.target.value;
+    render();
+  }
+});
 
 app.addEventListener("click", event => {
   const target = event.target.closest("[data-action]");
   if (!target) return;
 
   switch (target.dataset.action) {
-    case "open-setup": game.screen = "setup"; render(); break;
-    case "reload-quiz": reloadQuiz(); break;
+    case "open-setup": startSelectedQuiz(); break;
+    case "reload-app": loadApplication(); break;
     case "add-team": addTeam(); break;
     case "remove-team": removeTeam(); break;
     case "start-game": startGame(); break;
@@ -397,4 +467,4 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./sw.js").catch(() => {});
 }
 
-reloadQuiz();
+loadApplication();
