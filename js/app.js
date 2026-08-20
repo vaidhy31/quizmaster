@@ -6,6 +6,7 @@ import { renderLeaderboard } from "./components/Leaderboard.js";
 import { renderScoringPanel } from "./components/ScoringPanel.js";
 import { renderNumberBoard } from "./components/NumberBoard.js";
 import { renderQuestionContent } from "./questions/questionTypes.js";
+import { startFireworks } from "./effects/fireworks.js";
 
 const app = document.getElementById("app");
 let quiz = null;
@@ -290,7 +291,7 @@ app.addEventListener("click", event => {
       render();
       break;
     case "advance-round": advanceRound(); break;
-    case "show-final": game.leaderMode = "view"; render(); break;
+    case "show-final": game.leaderMode = "view"; render(); startFireworks(9000); break;
     case "back-to-round": game.screen = "board"; render(); break;
     case "reset-game":
       if (confirm("Reset scores and start again?")) resetGame();
