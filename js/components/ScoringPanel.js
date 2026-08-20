@@ -30,10 +30,6 @@ export function renderScoringPanel(quiz, game, points) {
 
   return `
     <div class="score-panel">
-      <div class="score-panel-title">Award points for this question</div>
       <div class="score-actions">${teamCards}</div>
-      <div class="muted" style="text-align:center;font-size:12px;margin-top:5px">
-        Choose Adult or Child for each team that answered correctly
-      </div>
     </div>`;
 }
