@@ -8,7 +8,10 @@ export function renderScoringPanel(quiz, game, points) {
 
     return [
       '<div class="score-btn ' + (selected ? 'good' : '') + '">',
+      '<div class="score-team-row">',
       '<span class="score-team-name">' + esc(team) + '</span>',
+      selected ? '<span class="score-points">+' + (points * multiplier) + '</span>' : '',
+      '</div>',
       '<div class="score-mode">',
       '<button type="button" class="score-mode-btn ' +
         (selected && !child ? 'selected' : '') +
@@ -19,7 +22,6 @@ export function renderScoringPanel(quiz, game, points) {
         '" data-action="set-score" data-team="' + index +
         '" data-multiplier="2">Child 2×</button>',
       '</div>',
-      selected ? '<span class="score-points">+' + (points * multiplier) + '</span>' : '',
       '</div>'
     ].join('');
   }).join('');

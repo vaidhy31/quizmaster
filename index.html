@@ -1161,11 +1161,42 @@ body {
   .score-mode,.score-mode-btn{height:29px !important; min-height:29px !important; max-height:29px !important}
 }
 
+
+/* v10.4 — team name and awarded score share one row */
+@media (orientation:landscape){
+  .score-team-row{
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:8px !important;
+    width:100% !important;
+    height:22px !important;
+    min-height:22px !important;
+    flex:0 0 22px !important;
+  }
+  .score-team-name{
+    display:inline-flex !important;
+    width:auto !important;
+    height:22px !important;
+    min-height:22px !important;
+    flex:0 0 auto !important;
+  }
+  .score-team-row .score-points{
+    display:inline-flex !important;
+    width:auto !important;
+    height:22px !important;
+    min-height:22px !important;
+    flex:0 0 auto !important;
+    margin:0 !important;
+  }
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v10.3</span></div></header>
+<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v10.4</span></div></header>
 <main id="app" class="screen"></main>
 </div>
 <script type="module" src="./js/app.js"></script>
