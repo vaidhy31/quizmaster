@@ -1,10 +1,10 @@
 export async function loadAppData() {
   const response = await fetch("./index.json", { cache: "no-store" });
-  if (!response.ok) throw new Error("app.json could not be loaded");
+  if (!response.ok) throw new Error("index.json could not be loaded");
   const appData = await response.json();
 
   if (!appData || !Array.isArray(appData.quizzes) || !appData.quizzes.length) {
-    throw new Error("app.json does not contain any quizzes.");
+    throw new Error("index.json does not contain any quizzes.");
   }
 
   return appData;
