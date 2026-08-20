@@ -1,9 +1,11 @@
 import { renderRegularQuestion } from "./RegularQuestion.js";
 import { renderMultipleChoiceQuestion } from "./MultipleChoiceQuestion.js";
+import { renderImageIdentificationQuestion } from "./ImageIdentificationQuestion.js";
 
 export const questionTypes = {
   regular: renderRegularQuestion,
-  multiple: renderMultipleChoiceQuestion
+  multiple: renderMultipleChoiceQuestion,
+  imageIdentification: renderImageIdentificationQuestion
 };
 
 export function renderQuestionContent(question, game) {

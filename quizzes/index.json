@@ -1,0 +1,9 @@
+{
+  "quizzes": [
+    {
+      "id": "fun-india",
+      "name": "Fun India Quiz",
+      "path": "./fun-india/quiz.json"
+    }
+  ]
+}
