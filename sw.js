@@ -1,14 +1,14 @@
-const CACHE='quiztime-v1-5';
+const CACHE='quiztime-v2-0';
 const ASSETS=[
   './',
   './index.html',
-  './index.json',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
   './js/app.js',
   './js/data/quizLoader.js',
-  './quizzes/fun-india.json'
+  './quizzes/index.json',
+  './quizzes/fun-india/quiz.json'
 ];
 
 self.addEventListener('install',e=>{

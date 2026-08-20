@@ -18,6 +18,7 @@ let game = createGameForQuiz({ teams: [], rounds: [] });
 function render() {
   if (!quiz) return renderHome();
   if (game.screen === "setup") return renderSetup();
+  if (game.screen === "rounds") return renderRoundsDashboard();
   if (game.screen === "board") return renderRoundBoard();
   if (game.screen === "play") return renderPlay();
   if (game.screen === "leader") return renderFullLeaderboard();
@@ -96,6 +97,42 @@ function renderSetup() {
       <button class="btn" data-action="go-home">Cancel</button>
     </div>
   </div>`;
+}
+
+function renderRoundsDashboard() {
+  app.innerHTML = `<div class="card rounds-dashboard">
+    <div class="center rounds-dashboard-header">
+      ${renderBrand("hero")}
+      <div class="rounds-kicker">QUIZ</div>
+      <h1>${esc(quiz.name || getSelectedQuizEntry()?.name || "Quiz")}</h1>
+      <p class="muted">Choose a round to play</p>
+    </div>
+    <div class="rounds-grid">
+      ${quiz.rounds.map((round, index) => `
+        <button type="button" class="round-card"
+          data-action="choose-round" data-round="${index}">
+          <span class="round-card-number">ROUND ${index + 1}</span>
+          <span class="round-card-title">${esc(round.name)}</span>
+          <span class="round-card-meta">${round.questions.length} questions</span>
+        </button>`).join("")}
+    </div>
+    <div class="actions rounds-actions">
+      <button class="btn" data-action="go-home">← Back to Quizzes</button>
+    </div>
+  </div>`;
+}
+
+function chooseRound(roundIndex) {
+  const index = Number(roundIndex);
+  if (!Number.isInteger(index) || index < 0 || index >= quiz.rounds.length) return;
+  game.round = index;
+  game.q = null;
+  game.selected = null;
+  game.revealed = false;
+  game.currentAwards = new Map();
+  game.currentTeam = 0;
+  game.screen = "board";
+  render();
 }
 
 function renderRoundBoard() {
@@ -396,7 +433,7 @@ async function loadApplication() {
   }
 }
 
-async function startSelectedQuiz() {
+async async function startSelectedQuiz() {
   const entry = getSelectedQuizEntry();
   if (!entry) return;
 
@@ -405,7 +442,7 @@ async function startSelectedQuiz() {
     quiz.name = quiz.name || entry.name;
     quiz.teams = [...(appData.defaultTeams || ["Team A", "Team B", "Team C", "Team D"])];
     game = createGameForQuiz(quiz);
-    game.screen = "setup";
+    game.screen = "rounds";
     render();
   } catch (error) {
     app.innerHTML = `<div class="card center">
@@ -436,6 +473,7 @@ app.addEventListener("click", event => {
     case "add-team": addTeam(); break;
     case "remove-team": removeTeam(); break;
     case "start-game": startGame(); break;
+    case "choose-round": chooseRound(Number(target.dataset.round)); break;
     case "go-home": goHome(); break;
     case "choose-question": chooseQuestion(Number(target.dataset.question)); break;
     case "select-answer": selectAnswer(Number(target.dataset.answer)); break;

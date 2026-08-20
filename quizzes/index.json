@@ -12,7 +12,7 @@
       "id": "fun-india",
       "name": "Fun India Quiz",
       "description": "A fun quiz covering general knowledge and curious questions about India.",
-      "file": "./quizzes/fun-india.json",
+      "file": "quizzes/fun-india/quiz.json",
       "rounds": 2,
       "questions": 12
     }

@@ -1,5 +1,5 @@
 export async function loadAppData() {
-  const response = await fetch("./index.json", { cache: "no-store" });
+  const response = await fetch("./quizzes/index.json", { cache: "no-store" });
   if (!response.ok) throw new Error("index.json could not be loaded");
   const appData = await response.json();
 
@@ -40,5 +40,6 @@ export async function loadQuiz(quizEntry) {
 
   const quiz = await response.json();
   validateQuiz(quiz);
+  quiz.__basePath = new URL(".", response.url).href;
   return quiz;
 }

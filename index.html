@@ -2823,7 +2823,7 @@ button[data-action="next-round"]:focus{
 }
 
 
-/* v1.5 — multiple quiz selection on the home screen */
+/* v2.0 — multiple quiz selection on the home screen */
 .quiz-selector{
   width:min(620px,100%);
   margin:20px auto 12px;
@@ -2878,6 +2878,91 @@ button[data-action="next-round"]:focus{
   font-weight:800;
 }
 
+
+/* v2.0 — round selection dashboard */
+.rounds-dashboard{
+  min-height:100%;
+  box-sizing:border-box;
+  padding:28px 30px 24px;
+  background:#fff;
+}
+.rounds-dashboard-header{
+  padding:4px 0 30px;
+}
+.rounds-kicker{
+  margin-top:14px;
+  color:#17365d;
+  font-size:14px;
+  font-weight:850;
+  letter-spacing:.14em;
+}
+.rounds-dashboard-header h1{
+  margin:4px 0 5px;
+  color:#17365d;
+  font-size:32px;
+  line-height:1.15;
+}
+.rounds-grid{
+  width:min(900px,100%);
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+.round-card{
+  min-height:130px;
+  padding:20px;
+  border:1px solid #d6dde5;
+  border-radius:16px;
+  background:#f8fafc;
+  color:#17365d;
+  text-align:left;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:6px;
+  transition:transform .12s ease, border-color .12s ease, background .12s ease;
+}
+.round-card:hover{
+  background:#fff8ef;
+  border-color:#f2b66d;
+  transform:translateY(-1px);
+}
+.round-card-number{
+  color:#a85d14;
+  font-size:13px;
+  font-weight:850;
+  letter-spacing:.08em;
+}
+.round-card-title{
+  font-size:22px;
+  font-weight:850;
+}
+.round-card-meta{
+  color:#687586;
+  font-size:14px;
+}
+.rounds-actions{
+  margin-top:28px;
+  justify-content:center;
+}
+@media(max-width:700px){
+  .rounds-dashboard{
+    padding:22px 18px;
+  }
+  .rounds-grid{
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .round-card{
+    min-height:108px;
+  }
+  .rounds-dashboard-header h1{
+    font-size:28px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2890,7 +2975,7 @@ button[data-action="next-round"]:focus{
       <span class="quiztime-word quiztime-time">TIME</span>
     </div>
   </div>
-  <span class="version-badge">v1.5</span>
+  <span class="version-badge">v2.0</span>
 </header>
 <main id="app" class="screen"></main>
 </div>
