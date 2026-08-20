@@ -1,5 +1,5 @@
 export async function loadAppData() {
-  const response = await fetch("./app.json", { cache: "no-store" });
+  const response = await fetch("./index.json", { cache: "no-store" });
   if (!response.ok) throw new Error("app.json could not be loaded");
   const appData = await response.json();
 
