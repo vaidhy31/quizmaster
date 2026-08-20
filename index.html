@@ -1466,11 +1466,63 @@ body {
   pointer-events:none;
 }
 
+
+/* v10.11 — final celebration is a pure presentation screen */
+.final-card{
+  padding:34px 42px;
+}
+
+.final-kicker{
+  font-size:15px;
+  letter-spacing:4px;
+}
+
+.final-card h1{
+  font-size:42px;
+  margin:6px 0 22px;
+}
+
+.final-leaderboard{
+  gap:12px;
+}
+
+.final-row{
+  padding:18px 22px;
+  border-radius:16px;
+  gap:18px;
+}
+
+.final-rank{
+  width:58px;
+  flex-basis:58px;
+  font-size:32px;
+}
+
+.final-name{
+  font-size:30px;
+  line-height:1.15;
+}
+
+.final-points{
+  min-width:110px;
+  font-size:30px;
+}
+
+.final-trophy{
+  font-size:72px;
+}
+
+/* There should never be an action area on the final celebration. */
+.final-screen .actions,
+.final-screen .final-actions{
+  display:none !important;
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v10.10</span></div></header>
+<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v10.11</span></div></header>
 <main id="app" class="screen"></main>
 </div>
 <script type="module" src="./js/app.js"></script>
