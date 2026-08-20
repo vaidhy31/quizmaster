@@ -1,7 +1,6 @@
 
 import { createGameForQuiz } from "./state/gameState.js";
-import { loadQuiz } from "./data/quizLoader.js";
-import { loadQuizCatalog } from "./data/quizCatalog.js";
+import { loadAppData, loadQuiz as fetchQuiz } from "./data/quizLoader.js";
 import { esc } from "./utils/helpers.js";
 import { renderLeaderboard } from "./components/Leaderboard.js";
 import { renderScoringPanel } from "./components/ScoringPanel.js";
@@ -11,8 +10,8 @@ import { renderBrand } from "./components/Brand.js";
 import { startFireworks, stopFireworks } from "./effects/fireworks.js";
 
 const app = document.getElementById("app");
+let appData = null;
 let quiz = null;
-let quizCatalog = [];
 let selectedQuizId = null;
 let game = createGameForQuiz({ teams: [], rounds: [] });
 
@@ -25,31 +24,58 @@ function render() {
   renderHome();
 }
 
-function renderHome() {
-  const cards = quizCatalog.map(item => `
-    <button class="quiz-choice ${selectedQuizId === item.id ? "selected" : ""}" data-action="select-quiz" data-quiz-id="${esc(item.id)}">
-      <strong>${esc(item.name)}</strong>
-      <span>${selectedQuizId === item.id ? "Selected" : "Select quiz"}</span>
-    </button>`).join("");
+function getSelectedQuizEntry() {
+  return appData?.quizzes?.find(item => item.id === selectedQuizId)
+    || appData?.quizzes?.find(item => item.id === appData.defaultQuizId)
+    || appData?.quizzes?.[0]
+    || null;
+}
 
-  app.innerHTML = `<div class="card center">
+function renderHome() {
+  const selected = getSelectedQuizEntry();
+
+  if (!appData) {
+    app.innerHTML = `<div class="card center">
+      ${renderBrand("hero")}
+      <p>Loading quizzes…</p>
+    </div>`;
+    return;
+  }
+
+  app.innerHTML = `<div class="card center quiz-home">
     ${renderBrand("hero")}
-    <h2>Select a Quiz</h2>
-    <p class="muted">Choose the quiz you want to play.</p>
-    <div class="quiz-catalog">${cards || `<p class="muted">No quizzes are available.</p>`}</div>
-    ${quiz ? `<div class="selected-quiz-summary">
-      <strong>${esc(quiz.name)}</strong>
-      <span>${quiz.rounds.length} rounds · ${quiz.rounds.reduce((n,r) => n + r.questions.length, 0)} questions</span>
+    <h2>Choose a Quiz</h2>
+
+    <div class="quiz-selector">
+      <label for="quizSelect">Quiz</label>
+      <select id="quizSelect">
+        ${appData.quizzes.map(item => `
+          <option value="${esc(item.id)}" ${item.id === selected?.id ? "selected" : ""}>
+            ${esc(item.name)}
+          </option>`).join("")}
+      </select>
+    </div>
+
+    ${selected ? `
+      <div class="quiz-summary">
+        <h3>${esc(selected.name)}</h3>
+        <p>${esc(selected.description || "")}</p>
+        <div class="quiz-meta">
+          <span>${selected.rounds} rounds</span>
+          <span>${selected.questions} questions</span>
+        </div>
+      </div>
       <div class="actions">
         <button class="btn primary big" data-action="open-setup">▶ Start Quiz</button>
       </div>
-    </div>` : ""}
-    <p class="landscape-hint">For the best experience, use the iPad in landscape.</p>
+    ` : `
+      <p class="muted">No quizzes are available.</p>
+    `}
   </div>`;
 }
 
 function renderSetup() {
-  const teams = quiz.teams || ["Team A", "Team B", "Team C", "Team D"];
+  const teams = quiz.teams || appData.defaultTeams || ["Team A", "Team B", "Team C", "Team D"];
   app.innerHTML = `<div class="card">
     <h2>Quiz Setup</h2>
     <h3>${esc(quiz.name)}</h3>
@@ -351,53 +377,62 @@ function goHome() {
   render();
 }
 
-async function reloadQuiz() {
+async function loadApplication() {
   try {
-    const catalog = await loadQuizCatalog();
-    quizCatalog = catalog.quizzes;
-    // QuizTime always opens at the catalog. A quiz is loaded only after
-    // the user explicitly selects it.
+    appData = await loadAppData();
+    selectedQuizId = appData.defaultQuizId || appData.quizzes[0]?.id || null;
     quiz = null;
-    selectedQuizId = null;
-    game = createGameForQuiz({ teams: [], rounds: [] });
     render();
   } catch (error) {
     app.innerHTML = `<div class="card center">
       <div style="font-size:54px">⚠️</div>
-      <h2>Could not load the quiz catalog</h2>
+      <h2>Could not load QuizTime</h2>
       <p>${esc(error.message)}</p>
-      <p class="muted">Make sure the quizzes folder and quiz catalog are present.</p>
-      <div class="actions"><button class="btn primary" data-action="reload-quiz">Try Again</button></div>
+      <p class="muted">Make sure app.json and the quizzes folder are available.</p>
+      <div class="actions">
+        <button class="btn primary" data-action="reload-app">Try Again</button>
+      </div>
     </div>`;
   }
 }
 
-async function selectQuiz(id) {
-  const item = quizCatalog.find(q => q.id === id);
-  if (!item) return;
+async function startSelectedQuiz() {
+  const entry = getSelectedQuizEntry();
+  if (!entry) return;
+
   try {
-    quiz = await loadQuiz(item);
-    selectedQuizId = id;
+    quiz = await fetchQuiz(entry);
+    quiz.name = quiz.name || entry.name;
+    quiz.teams = [...(appData.defaultTeams || ["Team A", "Team B", "Team C", "Team D"])];
     game = createGameForQuiz(quiz);
+    game.screen = "setup";
     render();
   } catch (error) {
     app.innerHTML = `<div class="card center">
       <div style="font-size:54px">⚠️</div>
-      <h2>Could not load this quiz</h2>
+      <h2>Could not load the selected quiz</h2>
       <p>${esc(error.message)}</p>
-      <div class="actions"><button class="btn" data-action="go-home">Back</button></div>
+      <div class="actions">
+        <button class="btn" data-action="go-home">Back to Quiz Selection</button>
+      </div>
     </div>`;
   }
 }
+
+app.addEventListener("change", event => {
+  if (event.target.id === "quizSelect") {
+    selectedQuizId = event.target.value;
+    render();
+  }
+});
 
 app.addEventListener("click", event => {
   const target = event.target.closest("[data-action]");
   if (!target) return;
 
   switch (target.dataset.action) {
-    case "open-setup": game.screen = "setup"; render(); break;
-    case "select-quiz": selectQuiz(target.dataset.quizId); break;
-    case "reload-quiz": reloadQuiz(); break;
+    case "open-setup": startSelectedQuiz(); break;
+    case "reload-app": loadApplication(); break;
     case "add-team": addTeam(); break;
     case "remove-team": removeTeam(); break;
     case "start-game": startGame(); break;
@@ -432,4 +467,4 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./sw.js").catch(() => {});
 }
 
-reloadQuiz();
+loadApplication();

@@ -1,23 +1,13 @@
-QuizTime v1.6
+QuizTime v1.1 — multiple quiz support.
 
-This version keeps the QuizTime v1.0 layout, colours, navigation, and scoring UI frozen while adding modular question types and a multi-quiz catalog.
-
-v1.6 updates:
-- Quiz content is JSON only; there are no duplicate quiz.js files.
-- quizzes/index.json is the quiz catalog.
-- Each quiz lives in quizzes/<quiz-id>/quiz.json.
-- Quiz-specific assets live in quizzes/<quiz-id>/assets/.
-- Application assets remain under the top-level assets/ folder.
-- The app always opens at the quiz catalog and requires the user to select a quiz.
-- Quiz JSON and catalog data are loaded with fetch(), so QuizTime is intended to run from an HTTP server such as GitHub Pages or a local web server.
-- Image Identification supports full and partial image questions with reveal behavior.
-
-Local server example:
-  python3 -m http.server 8000
-Then open:
-  http://localhost:8000/
+Structure:
+- app.json: application settings, default teams, and the quiz catalog.
+- quizzes/: individual quiz data files.
+- js/: reusable application components and question types.
 
 To add a quiz:
-1. Create quizzes/<quiz-id>/quiz.json.
-2. Put quiz-specific images/audio/etc. in quizzes/<quiz-id>/assets/.
-3. Add an entry to quizzes/index.json with id, name, description, and path.
+1. Add a new JSON file under quizzes/.
+2. Add an entry to app.json under "quizzes" with id, name, description, file, rounds, and questions.
+3. The new quiz will automatically appear in the home-screen selector.
+
+Quiz files contain quiz content only; app-level settings and the quiz catalog remain in app.json.
