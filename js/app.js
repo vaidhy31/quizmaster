@@ -6,7 +6,7 @@ import { renderLeaderboard } from "./components/Leaderboard.js";
 import { renderScoringPanel } from "./components/ScoringPanel.js";
 import { renderNumberBoard } from "./components/NumberBoard.js";
 import { renderQuestionContent } from "./questions/questionTypes.js";
-import { startFireworks } from "./effects/fireworks.js";
+import { startFireworks, stopFireworks } from "./effects/fireworks.js";
 
 const app = document.getElementById("app");
 let quiz = null;
@@ -128,6 +128,31 @@ function renderFullLeaderboard() {
     .sort((a,b) => b.score - a.score);
   const advancing = game.leaderMode === "roundEnd";
   const isFinal = game.round + 1 >= quiz.rounds.length;
+  const finalSequence = game.leaderMode === "finalSequence";
+
+  if (finalSequence) {
+    app.innerHTML = `<div class="final-screen">
+      <div class="final-card">
+        <div class="final-trophy">🏆</div>
+        <div class="final-kicker">QUIZ COMPLETE</div>
+        <h1>Final Scores</h1>
+        <div class="final-leaderboard">
+          ${sorted.map((item, position) => `
+            <div class="final-row final-row-${position + 1}">
+              <div class="final-rank">${["🥇","🥈","🥉"][position] || position + 1}</div>
+              <div class="final-name">${esc(quiz.teams[item.index])}</div>
+              <div class="final-points"><span class="count-score" data-score="${item.score}">0</span></div>
+            </div>`).join("")}
+        </div>
+        <div class="actions final-actions">
+          <button class="btn primary big" data-action="home-after-final">Done</button>
+        </div>
+      </div>
+    </div>`;
+
+    requestAnimationFrame(() => startFinalSequence(sorted));
+    return;
+  }
 
   app.innerHTML = `<div class="card">
     <div class="center">
@@ -151,6 +176,69 @@ function renderFullLeaderboard() {
       <button class="btn" data-action="go-home">Home</button>
     </div>
   </div>`;
+}
+
+function startFinalSequence(sorted) {
+  // Start browser-generated fireworks/audio from the same user gesture chain.
+  startFireworks(10000);
+  startCelebrationSound();
+
+  const rows = [...document.querySelectorAll(".final-row")];
+  rows.forEach((row, index) => {
+    row.style.animationDelay = `${index * 500}ms`;
+  });
+
+  document.querySelectorAll(".count-score").forEach((el, index) => {
+    const target = Number(el.dataset.score) || 0;
+    const delay = index * 500 + 400;
+    setTimeout(() => animateScore(el, target, 1000), delay);
+  });
+}
+
+function animateScore(el, target, duration) {
+  const start = performance.now();
+  function tick(now) {
+    const progress = Math.min(1, (now - start) / duration);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(target * eased);
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function startCelebrationSound() {
+  try {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+    const audio = new AudioContextClass();
+    const now = audio.currentTime;
+
+    const notes = [
+      [523.25, 0.00, 0.16],
+      [659.25, 0.14, 0.16],
+      [783.99, 0.28, 0.20],
+      [1046.50, 0.46, 0.35],
+      [783.99, 0.82, 0.16],
+      [1046.50, 0.96, 0.45]
+    ];
+
+    notes.forEach(([frequency, offset, length]) => {
+      const osc = audio.createOscillator();
+      const gain = audio.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(frequency, now + offset);
+      gain.gain.setValueAtTime(0.0001, now + offset);
+      gain.gain.exponentialRampToValueAtTime(0.10, now + offset + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + length);
+      osc.connect(gain).connect(audio.destination);
+      osc.start(now + offset);
+      osc.stop(now + offset + length + 0.03);
+    });
+
+    setTimeout(() => audio.close().catch(() => {}), 2200);
+  } catch (_) {
+    // Audio is optional; the visual celebration still runs.
+  }
 }
 
 function addTeam() {
@@ -278,6 +366,7 @@ app.addEventListener("click", event => {
     case "remove-team": removeTeam(); break;
     case "start-game": startGame(); break;
     case "go-home": goHome(); break;
+    case "home-after-final": stopFireworks(); goHome(); break;
     case "choose-question": chooseQuestion(Number(target.dataset.question)); break;
     case "select-answer": selectAnswer(Number(target.dataset.answer)); break;
     case "reveal": reveal(); break;
@@ -291,7 +380,7 @@ app.addEventListener("click", event => {
       render();
       break;
     case "advance-round": advanceRound(); break;
-    case "show-final": game.leaderMode = "view"; render(); startFireworks(9000); break;
+    case "show-final": game.leaderMode = "finalSequence"; render(); break;
     case "back-to-round": game.screen = "board"; render(); break;
     case "reset-game":
       if (confirm("Reset scores and start again?")) resetGame();

@@ -1357,11 +1357,108 @@ body {
   z-index:20;
 }
 
+
+/* v10.9 — final score reveal */
+.final-screen{
+  position:relative;
+  min-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  box-sizing:border-box;
+}
+
+.final-card{
+  position:relative;
+  z-index:30;
+  width:min(760px,92vw);
+  max-height:100%;
+  overflow:auto;
+  padding:24px 30px;
+  border-radius:24px;
+  background:rgba(255,255,255,.96);
+  box-shadow:0 18px 50px rgba(0,0,0,.16);
+  text-align:center;
+}
+
+.final-trophy{
+  font-size:58px;
+  animation:finalTrophyPop .8s cubic-bezier(.2,.9,.2,1) both;
+}
+
+.final-kicker{
+  font-size:12px;
+  letter-spacing:3px;
+  font-weight:800;
+  opacity:.6;
+  margin-top:2px;
+}
+
+.final-card h1{
+  margin:4px 0 14px;
+}
+
+.final-leaderboard{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.final-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 14px;
+  border-radius:13px;
+  background:#f1effa;
+  opacity:0;
+  transform:translateY(18px) scale(.97);
+  animation:finalRowIn .55s cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+.final-row-1{
+  background:#e8e3ff;
+  box-shadow:0 6px 18px rgba(64,54,143,.15);
+}
+
+.final-rank{
+  width:38px;
+  flex:0 0 38px;
+  font-size:22px;
+}
+
+.final-name{
+  flex:1;
+  text-align:left;
+  font-weight:800;
+}
+
+.final-points{
+  min-width:72px;
+  font-size:22px;
+  font-weight:900;
+}
+
+.final-actions{
+  margin-top:16px;
+}
+
+@keyframes finalRowIn{
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+@keyframes finalTrophyPop{
+  0%{opacity:0;transform:scale(.4) rotate(-10deg)}
+  70%{transform:scale(1.12) rotate(3deg)}
+  100%{opacity:1;transform:scale(1) rotate(0)}
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v10.8</span></div></header>
+<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v10.9</span></div></header>
 <main id="app" class="screen"></main>
 </div>
 <script type="module" src="./js/app.js"></script>
