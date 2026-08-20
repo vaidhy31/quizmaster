@@ -8,9 +8,20 @@
 <meta name="theme-color" content="#111827">
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icon-192.png">
-<title>Quizmaster</title>
+<title>QuizTime</title>
 <style>
-:root{--bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#697386;--accent:#4f46e5;--good:#15803d;--line:#e5e7eb;--shadow:0 10px 30px rgba(17,24,39,.08)}
+:root{
+--bg:#fffaf2;
+--card:#ffffff;
+--ink:#0b2a52;
+--muted:#5f6b7a;
+--accent:#ff9933;
+--saffron:#ff9933;
+--green:#138808;
+--navy:#000080;
+--line:#eadfce;
+--shadow:0 10px 30px rgba(11,42,82,.10)
+}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
 .app{min-height:100vh;padding:env(safe-area-inset-top) 18px env(safe-area-inset-bottom)}
@@ -1518,11 +1529,1313 @@ body {
   display:none !important;
 }
 
+
+/* v11.0 — QuizTime Indian-tricolour branding */
+.top-brand{display:flex;align-items:center;min-width:0}
+.quiztime-brand{display:flex;align-items:center;justify-content:center;gap:0;line-height:1}
+.quiztime-word{font-weight:950;letter-spacing:-.055em;text-shadow:0 2px 0 rgba(0,0,0,.10)}
+.quiztime-quiz{color:var(--saffron)}
+.quiztime-time{color:var(--green)}
+.quiztime-clock{object-fit:contain;display:block;flex:0 0 auto}
+.quiztime-brand-header .quiztime-word{font-size:25px}
+.quiztime-brand-header .quiztime-clock{width:42px;height:42px;margin:0 -1px}
+.quiztime-brand-hero .quiztime-word{font-size:62px}
+.quiztime-brand-hero .quiztime-clock{width:105px;height:105px;margin:0 -4px}
+.quiztime-brand-board .quiztime-word{font-size:28px}
+.quiztime-brand-board .quiztime-clock{width:52px;height:52px;margin:0 -2px}
+.quiztime-brand-final .quiztime-word{font-size:34px}
+.quiztime-brand-final .quiztime-clock{width:68px;height:68px;margin:0 -2px}
+.version-badge{color:var(--navy);font-size:11px;font-weight:800;white-space:nowrap}
+.leaderboard-title{margin:4px 0 10px;color:var(--navy)}
+.card{border-color:#eadfce}
+.btn.primary{background:var(--saffron);color:#fff}
+.btn.good{background:#e7f5e3;color:var(--green)}
+.round{color:var(--navy)}
+.pill{background:#fff0df;color:#a24b00}
+.number-tile{border-color:var(--saffron);background:#fff4e6;color:var(--navy)}
+.number-tile.taken{background:#eef0ef;border-color:#d6dad7;color:#9aa19c}
+.side-leader.current{outline:2px solid #ffb866;background:#fff4e6}
+.side-turn{background:#edf6eb;color:var(--green)}
+.answer.selected{outline-color:#8aa6df;background:#eef3ff}
+.answer.correct{background:#e7f5e3;color:var(--green)}
+.regular-answer-area{border-color:#b9dfb0;background:#f3faf1}
+.regular-answer{color:var(--green)}
+.final-row-1{background:#fff0d8;box-shadow:0 6px 18px rgba(255,153,51,.18)}
+.final-row-2{background:#eef3f8}
+.final-row-3{background:#fff0d8}
+.final-row-4{background:#e8f4e5}
+.final-card{border-top:5px solid var(--saffron)}
+.final-kicker{color:var(--navy)}
+@media(max-width:700px){
+  .quiztime-brand-header .quiztime-word{font-size:21px}
+  .quiztime-brand-header .quiztime-clock{width:36px;height:36px}
+  .quiztime-brand-hero .quiztime-word{font-size:44px}
+  .quiztime-brand-hero .quiztime-clock{width:78px;height:78px}
+}
+
+
+/* v11.1 — green leaderboard */
+.side-board{
+  background:#ffffff !important;
+  border-color:#d9eadf !important;
+}
+
+.side-board h3{
+  color:#14532d !important;
+}
+
+.side-current{
+  background:#f0fdf4 !important;
+  color:#166534 !important;
+  border:1px solid #bbf7d0 !important;
+}
+
+.side-current strong{
+  color:#14532d !important;
+}
+
+.side-leader{
+  background:#f7fcf8 !important;
+  border:1px solid #e5f2e8 !important;
+  color:#172033 !important;
+}
+
+.side-leader:nth-child(2n){
+  background:#f0fdf4 !important;
+}
+
+.side-leader.current{
+  outline:2px solid #86efac !important;
+  outline-offset:0 !important;
+  background:#dcfce7 !important;
+  border-color:#86efac !important;
+}
+
+.side-name{
+  color:#172033 !important;
+}
+
+.side-points{
+  color:#166534 !important;
+}
+
+.side-rank{
+  color:#14532d !important;
+}
+
+.side-turn{
+  background:#f0fdf4 !important;
+  color:#166534 !important;
+  border:1px solid #bbf7d0 !important;
+}
+
+/* Remove old purple leaderboard/current-team styling if inherited. */
+.side-board .pill,
+.side-board .side-current{
+  --accent:#16a34a;
+}
+
+@media(max-width:850px){
+  .side-leader.current{
+    outline-width:2px !important;
+  }
+}
+
+
+/* v11.2 — unified QuizTime green/saffron palette */
+
+/* Main quiz surface */
+.quiz-main{
+  background:#fbfdfb !important;
+  border-color:#d6e9dc !important;
+}
+
+/* Round/category header */
+.quiz-main .round,
+.quiz-head .round,
+.board-header .round{
+  color:#166534 !important;
+}
+
+/* Number selection matrix */
+.number-card,
+.number-tile,
+.question-number,
+.number-board button{
+  background:#e8f5ec !important;
+  border-color:#4caf70 !important;
+  color:#166534 !important;
+}
+
+.number-card:hover,
+.number-tile:hover,
+.question-number:hover,
+.number-board button:hover{
+  background:#d4eedc !important;
+  border-color:#2f8f57 !important;
+  color:#14532d !important;
+}
+
+.number-card.used,
+.number-tile.used,
+.question-number.used,
+.number-board button.used,
+.number-card.selected,
+.number-tile.selected{
+  background:#c7e8d0 !important;
+  border-color:#198754 !important;
+  color:#14532d !important;
+}
+
+/* Main action buttons: use a restrained green, with a stronger selected/active state. */
+.btn.primary{
+  background:#198754 !important;
+  border-color:#198754 !important;
+  color:#fff !important;
+}
+
+.btn.primary:hover{
+  background:#157347 !important;
+  border-color:#157347 !important;
+}
+
+/* Leaderboard should read clearly as a green panel rather than white. */
+.side-board{
+  background:#eef8f1 !important;
+  border-color:#c5e1ce !important;
+}
+
+.side-board h3{
+  color:#14532d !important;
+}
+
+.side-current{
+  background:#d9f0df !important;
+  border-color:#9bd0aa !important;
+  color:#14532d !important;
+}
+
+.side-current strong{
+  color:#0f5b2c !important;
+}
+
+.side-leader{
+  background:#e5f3e9 !important;
+  border-color:#cde5d4 !important;
+}
+
+.side-leader:nth-child(2n){
+  background:#dff0e4 !important;
+}
+
+.side-leader.current{
+  background:#c9e8d1 !important;
+  border-color:#70b981 !important;
+  outline:2px solid #4caf70 !important;
+}
+
+.side-name{
+  color:#173122 !important;
+}
+
+.side-points{
+  color:#14532d !important;
+}
+
+.side-rank{
+  color:#14532d !important;
+}
+
+/* Scoring panel pills should no longer inherit purple. */
+.score-mode{
+  border-color:#a8cfb2 !important;
+  background:#f2faf4 !important;
+}
+
+.score-mode-btn{
+  color:#27633a !important;
+}
+
+.score-mode-btn + .score-mode-btn{
+  border-left-color:#a8cfb2 !important;
+}
+
+.score-mode-btn.selected{
+  background:#198754 !important;
+  color:#fff !important;
+}
+
+.score-btn.good .score-mode{
+  border-color:#72b982 !important;
+  background:#e4f4e8 !important;
+}
+
+.score-btn.good .score-mode-btn{
+  color:#14532d !important;
+}
+
+.score-btn.good .score-mode-btn + .score-mode-btn{
+  border-left-color:#72b982 !important;
+}
+
+.score-btn.good .score-mode-btn.selected{
+  background:#146c43 !important;
+  color:#fff !important;
+}
+
+/* Final score card: keep green branding while retaining the celebration feel. */
+.final-card{
+  border:1px solid #c9e3d0;
+}
+
+.final-kicker{
+  color:#198754 !important;
+}
+
+.final-row{
+  background:#e9f6ed !important;
+}
+
+.final-row-1{
+  background:#d4eedc !important;
+  box-shadow:0 6px 18px rgba(25,135,84,.18) !important;
+}
+
+.final-name{
+  color:#173122 !important;
+}
+
+.final-points{
+  color:#14532d !important;
+}
+
+/* Keep saffron available as an accent rather than replacing the green UI. */
+.quiz-main .btn.primary::first-letter{
+  color:#ff9933;
+}
+
+
+/* v11.3 — compact leaderboard current-team banner and unclipped team cards */
+
+/* The current-team strip should identify the turn without consuming leaderboard space. */
+.side-current{
+  box-sizing:border-box !important;
+  width:100% !important;
+  min-height:0 !important;
+  height:auto !important;
+  padding:6px 8px !important;
+  margin:0 0 6px !important;
+  border-radius:8px !important;
+  line-height:1.2 !important;
+  font-size:12px !important;
+}
+
+/* Keep the leaderboard cards fully inside the sidebar. */
+.side-leaders{
+  width:100% !important;
+  box-sizing:border-box !important;
+  padding:0 2px !important;
+}
+
+.side-leader{
+  box-sizing:border-box !important;
+  width:100% !important;
+  margin:4px 0 !important;
+}
+
+.side-leader.current{
+  /* Use an inset border instead of an outline, which cannot be clipped by the card edge. */
+  outline:none !important;
+  border:2px solid #4caf70 !important;
+  box-sizing:border-box !important;
+}
+
+/* On the two-column compact leaderboard, prevent either card from overflowing its grid cell. */
+@media(max-width:850px){
+  .side-leaders{
+    padding:0 !important;
+    gap:5px !important;
+  }
+  .side-leader{
+    width:100% !important;
+    min-width:0 !important;
+    margin:0 !important;
+  }
+}
+
+
+/* v11.4 — QuizTime tricolour-inspired UI palette */
+
+/* Plain white overall canvas */
+body,
+.app,
+.screen{
+  background:#fff !important;
+}
+
+/* Main number-selection area */
+.quiz-main{
+  background:#fff !important;
+  border-color:#e5e7eb !important;
+}
+
+/* Number matrix: saffron */
+.quiz-main .number-grid{
+  padding:2px !important;
+}
+
+.quiz-main .number-tile,
+.number-card,
+.number-tile,
+.question-number,
+.number-board button{
+  background:#fff1df !important;
+  border:2px solid #ff9933 !important;
+  color:#b85c00 !important;
+  box-sizing:border-box !important;
+}
+
+.quiz-main .number-tile:hover,
+.number-card:hover,
+.number-tile:hover,
+.question-number:hover,
+.number-board button:hover{
+  background:#ffe1bd !important;
+  border-color:#e87900 !important;
+  color:#914800 !important;
+}
+
+.quiz-main .number-tile.used,
+.number-card.used,
+.number-tile.used,
+.question-number.used,
+.number-board button.used,
+.number-card.selected,
+.number-tile.selected{
+  background:#ffcc80 !important;
+  border-color:#e67e00 !important;
+  color:#8a4300 !important;
+}
+
+/* Finish / completion actions: green */
+.btn.primary{
+  background:#198754 !important;
+  border-color:#198754 !important;
+  color:#fff !important;
+}
+
+.btn.primary:hover{
+  background:#146c43 !important;
+  border-color:#146c43 !important;
+}
+
+/* Question area: cool grey-blue with Indian blue text */
+.question,
+.question-panel,
+.answer-panel,
+.answer-box,
+.choices-panel{
+  background:#f1f5f9 !important;
+  border-color:#cbd5e1 !important;
+  color:#17365d !important;
+}
+
+.question{
+  color:#17365d !important;
+}
+
+.question p,
+.question h1,
+.question h2,
+.question h3,
+.question strong{
+  color:#17365d !important;
+}
+
+/* Reveal answer: saffron */
+[data-action="reveal-answer"],
+.reveal-answer,
+.btn.reveal{
+  background:#ff9933 !important;
+  border-color:#ff9933 !important;
+  color:#fff !important;
+}
+
+[data-action="reveal-answer"]:hover,
+.reveal-answer:hover,
+.btn.reveal:hover{
+  background:#e67e00 !important;
+  border-color:#e67e00 !important;
+}
+
+/* Scoring panel: pale saffron */
+.score-panel{
+  background:#fff4e6 !important;
+  border-color:#f3c58f !important;
+}
+
+.score-btn{
+  background:#fffaf4 !important;
+  border-color:#f0d2aa !important;
+}
+
+.score-btn.good{
+  background:#fff1df !important;
+  border-color:#e8b36f !important;
+}
+
+.score-mode{
+  border-color:#8fc7a3 !important;
+  background:#f7fbf8 !important;
+}
+
+.score-mode-btn{
+  color:#176b3a !important;
+}
+
+.score-mode-btn + .score-mode-btn{
+  border-left-color:#8fc7a3 !important;
+}
+
+.score-mode-btn.selected{
+  background:#198754 !important;
+  color:#fff !important;
+}
+
+.score-btn.good .score-mode{
+  border-color:#70b889 !important;
+  background:#eef8f1 !important;
+}
+
+.score-btn.good .score-mode-btn{
+  color:#176b3a !important;
+}
+
+.score-btn.good .score-mode-btn + .score-mode-btn{
+  border-left-color:#70b889 !important;
+}
+
+.score-btn.good .score-mode-btn.selected{
+  background:#146c43 !important;
+  color:#fff !important;
+}
+
+/* Leaderboard: green shades, but clearly separate from the white canvas */
+.side-board{
+  background:#eef8f1 !important;
+  border-color:#c5e1ce !important;
+}
+
+.side-board .leaderboard-title{
+  color:#14532d !important;
+}
+
+.side-current{
+  /* Fixed-content strip: never flex-grow */
+  display:block !important;
+  flex:0 0 auto !important;
+  align-self:stretch !important;
+  height:36px !important;
+  min-height:36px !important;
+  max-height:36px !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+  padding:7px 8px !important;
+  margin:0 0 6px !important;
+  border-radius:8px !important;
+  background:#d9f0df !important;
+  border:1px solid #9bd0aa !important;
+  color:#14532d !important;
+  line-height:20px !important;
+  font-size:12px !important;
+}
+
+.side-current strong{
+  color:#0f5b2c !important;
+}
+
+.side-leaders{
+  flex:0 0 auto !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+  padding:0 2px !important;
+}
+
+.side-leader{
+  background:#e5f3e9 !important;
+  border:1px solid #cde5d4 !important;
+  color:#173122 !important;
+  box-sizing:border-box !important;
+  width:100% !important;
+  margin:4px 0 !important;
+}
+
+.side-leader:nth-child(2n){
+  background:#dff0e4 !important;
+}
+
+.side-leader.current{
+  outline:none !important;
+  background:#c9e8d1 !important;
+  border:2px solid #4caf70 !important;
+  box-sizing:border-box !important;
+}
+
+.side-name{
+  color:#173122 !important;
+}
+
+.side-points,
+.side-rank{
+  color:#14532d !important;
+}
+
+/* Final score presentation keeps the blue/green identity */
+.final-card{
+  border-color:#c9e3d0 !important;
+}
+
+.final-kicker{
+  color:#198754 !important;
+}
+
+.final-row{
+  background:#e9f6ed !important;
+}
+
+.final-row-1{
+  background:#d4eedc !important;
+}
+
+.final-name{
+  color:#173122 !important;
+}
+
+.final-points{
+  color:#14532d !important;
+}
+
+
+/* v11.5 — leaderboard cards directly below current-team strip */
+.side-board{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:stretch !important;
+}
+
+.side-current{
+  flex:0 0 36px !important;
+}
+
+.side-leaders{
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:flex-start !important;
+  align-items:stretch !important;
+  flex:0 0 auto !important;
+  margin-top:0 !important;
+}
+
+/* Keep compact mobile/tablet layout only when the sidebar actually collapses. */
+@media(max-width:850px){
+  .side-leaders{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:5px !important;
+  }
+}
+
+/* Scoring team cards: remove all inherited purple and use pale saffron. */
+.score-actions > .score-btn{
+  background:#fff8ed !important;
+  border:1px solid #efc78f !important;
+  color:#173122 !important;
+}
+
+.score-actions > .score-btn.good{
+  background:#fff0d9 !important;
+  border:1px solid #e3aa62 !important;
+  color:#173122 !important;
+}
+
+.score-team-name{
+  color:#173122 !important;
+}
+
+.score-points{
+  color:#176b3a !important;
+}
+
+.score-mode{
+  background:#f8fbf9 !important;
+  border-color:#8fc7a3 !important;
+}
+
+.score-mode-btn{
+  color:#176b3a !important;
+}
+
+.score-mode-btn + .score-mode-btn{
+  border-left-color:#8fc7a3 !important;
+}
+
+.score-mode-btn.selected{
+  background:#198754 !important;
+  color:#fff !important;
+}
+
+.score-btn.good .score-mode{
+  background:#eef8f1 !important;
+  border-color:#70b889 !important;
+}
+
+.score-btn.good .score-mode-btn{
+  color:#176b3a !important;
+}
+
+.score-btn.good .score-mode-btn + .score-mode-btn{
+  border-left-color:#70b889 !important;
+}
+
+.score-btn.good .score-mode-btn.selected{
+  background:#146c43 !important;
+  color:#fff !important;
+}
+
+
+/* v11.6 — preserve a strong visual state for already-selected question numbers */
+.quiz-main .number-tile.used,
+.quiz-main .number-tile.selected,
+.number-card.used,
+.number-card.selected,
+.number-tile.used,
+.number-tile.selected,
+.question-number.used,
+.question-number.selected,
+.number-board button.used,
+.number-board button.selected{
+  background:#e0a052 !important;
+  border-color:#d97706 !important;
+  color:#fff !important;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.18) !important;
+  opacity:1 !important;
+}
+
+.quiz-main .number-tile.used:hover,
+.quiz-main .number-tile.selected:hover,
+.number-card.used:hover,
+.number-card.selected:hover,
+.number-tile.used:hover,
+.number-tile.selected:hover{
+  background:#d8892f !important;
+  border-color:#b45309 !important;
+  color:#fff !important;
+}
+
+
+/* v11.7 — larger, more readable leaderboard typography */
+.side-board .leaderboard-title{
+  font-size:20px !important;
+  line-height:1.2 !important;
+  margin:4px 0 10px !important;
+}
+
+.side-current{
+  font-size:14px !important;
+  line-height:20px !important;
+}
+
+.side-leader{
+  min-height:54px !important;
+  padding:10px 10px !important;
+  gap:9px !important;
+}
+
+.side-rank{
+  width:30px !important;
+  font-size:18px !important;
+}
+
+.side-name{
+  font-size:17px !important;
+  line-height:1.2 !important;
+  font-weight:800 !important;
+}
+
+.side-points{
+  font-size:18px !important;
+  line-height:1.2 !important;
+  font-weight:900 !important;
+}
+
+@media(max-width:850px){
+  .side-name{
+    font-size:16px !important;
+  }
+  .side-points{
+    font-size:17px !important;
+  }
+}
+
+
+/* v11.8 — Reveal Answer is saffron, overriding the old green primary styling */
+button[data-action="reveal-answer"],
+[data-action="reveal-answer"].btn,
+.btn[data-action="reveal-answer"]{
+  background:#ff9933 !important;
+  border-color:#ff9933 !important;
+  color:#fff !important;
+}
+
+button[data-action="reveal-answer"]:hover,
+[data-action="reveal-answer"].btn:hover,
+.btn[data-action="reveal-answer"]:hover{
+  background:#e67e00 !important;
+  border-color:#e67e00 !important;
+  color:#fff !important;
+}
+
+button[data-action="reveal-answer"]:active,
+button[data-action="reveal-answer"]:focus-visible,
+[data-action="reveal-answer"].btn:active,
+[data-action="reveal-answer"].btn:focus-visible{
+  background:#d97706 !important;
+  border-color:#b45309 !important;
+  color:#fff !important;
+}
+
+
+/* v11.9 — target the actual action/class names used by the app */
+
+/* The button is data-action="reveal", not reveal-answer. */
+button[data-action="reveal"],
+button.btn[data-action="reveal"]{
+  background:#ff9933 !important;
+  border-color:#ff9933 !important;
+  color:#fff !important;
+}
+
+button[data-action="reveal"]:hover{
+  background:#e67e00 !important;
+  border-color:#e67e00 !important;
+}
+
+button[data-action="reveal"]:active,
+button[data-action="reveal"]:focus-visible{
+  background:#d97706 !important;
+  border-color:#b45309 !important;
+  color:#fff !important;
+}
+
+/* NumberBoard uses the class "taken", not "used". */
+.quiz-main .number-tile{
+  background:#fff4e6 !important;
+  border-color:#ff9933 !important;
+  color:#17365d !important;
+}
+
+.quiz-main .number-tile.taken,
+.quiz-main .number-tile:disabled{
+  background:#e0a052 !important;
+  border-color:#d97706 !important;
+  color:#fff !important;
+  opacity:1 !important;
+  cursor:not-allowed !important;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.18) !important;
+}
+
+.quiz-main .number-tile.taken:hover,
+.quiz-main .number-tile:disabled:hover{
+  background:#d8892f !important;
+  border-color:#b45309 !important;
+  color:#fff !important;
+}
+
+
+/* v11.10 — action colours: saffron reveal, green next-turn */
+
+/* Reveal Answer: target the actual "reveal" action. */
+button[data-action="reveal"],
+button.btn[data-action="reveal"]{
+  background:#ff9933 !important;
+  background-image:none !important;
+  border-color:#ff9933 !important;
+  color:#fff !important;
+  text-shadow:none !important;
+}
+
+button[data-action="reveal"]:hover,
+button[data-action="reveal"]:focus{
+  background:#e67e00 !important;
+  border-color:#e67e00 !important;
+  color:#fff !important;
+}
+
+/* Next Turn: green, including the button's full label. */
+button[data-action="next-turn"],
+button.btn[data-action="next-turn"],
+button[data-action="next-question"],
+button.btn[data-action="next-question"]{
+  background:#198754 !important;
+  background-image:none !important;
+  border-color:#198754 !important;
+  color:#fff !important;
+  text-shadow:none !important;
+}
+
+button[data-action="next-turn"]:hover,
+button[data-action="next-turn"]:focus,
+button[data-action="next-question"]:hover,
+button[data-action="next-question"]:focus{
+  background:#146c43 !important;
+  border-color:#146c43 !important;
+  color:#fff !important;
+}
+
+/* Remove inherited saffron text styling from action buttons. */
+button[data-action="reveal"]::first-letter,
+button[data-action="next-turn"]::first-letter,
+button[data-action="next-question"]::first-letter{
+  color:inherit !important;
+}
+
+
+/* v11.11 — "Turn" label uses the saffron accent */
+.side-turn{
+  color:#ff9933 !important;
+}
+
+
+/* v11.12 — neutral scoring panel with deep-blue controls */
+
+/* Neutral scoring surface */
+.score-panel{
+  background:#f7f7f5 !important;
+  border:1px solid #d9d9d4 !important;
+}
+
+/* Individual team scoring cards */
+.score-actions > .score-btn,
+.score-actions > .score-btn.good{
+  background:#fff !important;
+  border:1px solid #d6d9d6 !important;
+  color:#17365d !important;
+  box-shadow:none !important;
+}
+
+.score-actions > .score-btn.good{
+  background:#f2f8f3 !important;
+  border-color:#b9d6bf !important;
+}
+
+.score-team-name{
+  color:#17365d !important;
+}
+
+.score-points{
+  color:#17365d !important;
+}
+
+/* Adult / Child segmented controls */
+.score-mode{
+  background:#f4f5f5 !important;
+  border:1px solid #cfd3d2 !important;
+}
+
+.score-mode-btn{
+  background:transparent !important;
+  color:#17365d !important;
+}
+
+.score-mode-btn + .score-mode-btn{
+  border-left:1px solid #cfd3d2 !important;
+}
+
+.score-mode-btn.selected{
+  background:#17365d !important;
+  color:#fff !important;
+}
+
+.score-btn.good .score-mode{
+  background:#eef3ef !important;
+  border-color:#aebfb2 !important;
+}
+
+.score-btn.good .score-mode-btn{
+  color:#17365d !important;
+}
+
+.score-btn.good .score-mode-btn + .score-mode-btn{
+  border-left-color:#aebfb2 !important;
+}
+
+.score-btn.good .score-mode-btn.selected{
+  background:#17365d !important;
+  color:#fff !important;
+}
+
+
+/* v11.13 — saffron Next Turn and consistent regular-answer background */
+
+/* Next Turn remains a saffron action; Finish/other primary actions stay green. */
+button[data-action="next-round"],
+button.btn[data-action="next-round"]{
+  background:#ff9933 !important;
+  background-image:none !important;
+  border-color:#ff9933 !important;
+  color:#fff !important;
+}
+
+button[data-action="next-round"]:hover,
+button[data-action="next-round"]:focus{
+  background:#e67e00 !important;
+  border-color:#e67e00 !important;
+  color:#fff !important;
+}
+
+/* Regular answer uses the same cool grey-blue surface as MCQ choices. */
+.regular-answer-area{
+  background:#f1f5f9 !important;
+  border-color:#cbd5e1 !important;
+}
+
+.regular-answer{
+  background:#f1f5f9 !important;
+  color:#17365d !important;
+}
+
+
+/* v11.14 — End Round stays green; question-section Next Turn is saffron */
+
+/* End Round in the number-selection screen */
+button[data-action="next-round"],
+button.btn[data-action="next-round"]{
+  background:#198754 !important;
+  background-image:none !important;
+  border-color:#198754 !important;
+  color:#fff !important;
+}
+
+button[data-action="next-round"]:hover,
+button[data-action="next-round"]:focus{
+  background:#146c43 !important;
+  border-color:#146c43 !important;
+  color:#fff !important;
+}
+
+/* Next Turn in the question section */
+button[data-action="next-question"],
+button.btn[data-action="next-question"],
+button[data-action="next-turn"],
+button.btn[data-action="next-turn"]{
+  background:#ff9933 !important;
+  background-image:none !important;
+  border-color:#ff9933 !important;
+  color:#fff !important;
+}
+
+button[data-action="next-question"]:hover,
+button[data-action="next-question"]:focus,
+button[data-action="next-turn"]:hover,
+button[data-action="next-turn"]:focus{
+  background:#e67e00 !important;
+  border-color:#e67e00 !important;
+  color:#fff !important;
+}
+
+
+/* v11.15 — subtle number grid + saffron question-section Next Turn */
+
+/* Number grid: use a much softer saffron tint. */
+.quiz-main .number-tile{
+  background:#fff8ef !important;
+  border-color:#f2b66d !important;
+  color:#a85d14 !important;
+}
+
+.quiz-main .number-tile:hover:not(:disabled){
+  background:#fff0dc !important;
+  border-color:#e6a04f !important;
+  color:#914d0d !important;
+}
+
+/* Used questions remain clearly distinguishable, but not as a large saffron block. */
+.quiz-main .number-tile.taken,
+.quiz-main .number-tile:disabled{
+  background:#f3d4ad !important;
+  border-color:#d99545 !important;
+  color:#7c4510 !important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.45) !important;
+  opacity:1 !important;
+}
+
+/* The actual question-section button is finish-question. */
+button[data-action="finish-question"],
+button.btn[data-action="finish-question"]{
+  background:#ff9933 !important;
+  background-image:none !important;
+  border-color:#ff9933 !important;
+  color:#fff !important;
+}
+
+button[data-action="finish-question"]:hover,
+button[data-action="finish-question"]:focus{
+  background:#e67e00 !important;
+  border-color:#e67e00 !important;
+  color:#fff !important;
+}
+
+/* End Round remains green. */
+button[data-action="next-round"],
+button.btn[data-action="next-round"]{
+  background:#198754 !important;
+  background-image:none !important;
+  border-color:#198754 !important;
+  color:#fff !important;
+}
+
+
+/* v11.16 — force the complete Next Turn label to white */
+button[data-action="finish-question"],
+button[data-action="finish-question"] *,
+button.btn[data-action="finish-question"],
+button.btn[data-action="finish-question"] *{
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  text-shadow:none !important;
+}
+
+
+/* v12.0 — freeze the basic QuizTime layout */
+.quiz-layout{
+  background:#fff !important;
+}
+
+
+/* v12.1 — the layout container itself is explicitly white */
+div.quiz-layout,
+.quiz-layout{
+  background:#fff !important;
+  background-image:none !important;
+  border-color:transparent !important;
+}
+
+
+/* v12.2 — remove panel shadows that create the grey-looking strip between columns */
+.quiz-layout,
+.quiz-main,
+.side-board{
+  box-shadow:none !important;
+}
+
+
+/* v12.3 — deep blue End Round action */
+button[data-action="next-round"],
+button.btn[data-action="next-round"]{
+  background:#17365d !important;
+  background-image:none !important;
+  border-color:#17365d !important;
+  color:#fff !important;
+}
+
+button[data-action="next-round"]:hover,
+button[data-action="next-round"]:focus{
+  background:#102a43 !important;
+  border-color:#102a43 !important;
+  color:#fff !important;
+}
+
+
+/* v12.4 — question-number instructions removed */
+.number-instruction,
+.number-help,
+.quiz-main .instruction,
+.quiz-main .hint-text{
+  display:none !important;
+}
+
+
+/* v12.5 — give the number grid more breathing room */
+.quiz-main .number-grid{
+  padding:10px 12px 12px !important;
+  gap:10px !important;
+  box-sizing:border-box !important;
+}
+
+.quiz-main .number-tile{
+  min-width:0 !important;
+  min-height:0 !important;
+  width:auto !important;
+  height:auto !important;
+  aspect-ratio:1 / 0.72 !important;
+  padding:8px 10px !important;
+  font-size:18px !important;
+  border-width:1.5px !important;
+  border-radius:10px !important;
+}
+
+@media(max-width:850px){
+  .quiz-main .number-grid{
+    padding:9px 10px 11px !important;
+    gap:8px !important;
+  }
+  .quiz-main .number-tile{
+    padding:7px 8px !important;
+    font-size:17px !important;
+    border-radius:9px !important;
+  }
+}
+
+
+/* v12.6 — give the round header stronger hierarchy and balanced spacing */
+.quiz-main .round-header,
+.quiz-main .round-title,
+.quiz-main .round-number,
+.quiz-main .board-header{
+  color:#17365d !important;
+}
+
+.quiz-main .round-header{
+  padding:14px 18px 18px !important;
+  margin-bottom:2px !important;
+}
+
+.quiz-main .round-title{
+  font-size:24px !important;
+  line-height:1.25 !important;
+  font-weight:800 !important;
+  margin:0 !important;
+}
+
+.quiz-main .round-number{
+  font-size:20px !important;
+  line-height:1.25 !important;
+  font-weight:750 !important;
+  margin-top:4px !important;
+  color:#17365d !important;
+}
+
+/* Balanced horizontal breathing room for the number grid. */
+.quiz-main .number-grid{
+  margin-left:12px !important;
+  margin-right:12px !important;
+  padding-left:12px !important;
+  padding-right:12px !important;
+}
+
+@media(max-width:850px){
+  .quiz-main .round-header{
+    padding:12px 14px 16px !important;
+  }
+  .quiz-main .round-title{
+    font-size:22px !important;
+  }
+  .quiz-main .round-number{
+    font-size:19px !important;
+  }
+  .quiz-main .number-grid{
+    margin-left:8px !important;
+    margin-right:8px !important;
+    padding-left:9px !important;
+    padding-right:9px !important;
+  }
+}
+
+
+/* v12.7 — final round-header and number-grid spacing */
+.quiz-main .board-header{
+  padding:14px 18px 20px !important;
+  margin:0 !important;
+  flex:0 0 auto !important;
+}
+
+.quiz-main .board-header .round{
+  color:#17365d !important;
+  font-size:18px !important;
+  line-height:1.25 !important;
+  font-weight:800 !important;
+  letter-spacing:.06em !important;
+  margin:0 0 5px !important;
+}
+
+.quiz-main .board-header h1{
+  color:#17365d !important;
+  font-size:28px !important;
+  line-height:1.2 !important;
+  margin:0 !important;
+  font-weight:850 !important;
+}
+
+/* Space between the header and first row, while keeping rows compact. */
+.quiz-main .number-grid{
+  margin:10px 12px 12px !important;
+  padding:10px 14px 12px !important;
+  column-gap:16px !important;
+  row-gap:8px !important;
+  box-sizing:border-box !important;
+}
+
+@media (orientation:landscape){
+  .quiz-main .number-grid{
+    margin:10px 12px 12px !important;
+    padding:10px 14px 12px !important;
+    column-gap:16px !important;
+    row-gap:8px !important;
+  }
+}
+
+@media(max-width:850px){
+  .quiz-main .board-header{
+    padding:12px 14px 18px !important;
+  }
+  .quiz-main .board-header .round{
+    font-size:17px !important;
+  }
+  .quiz-main .board-header h1{
+    font-size:25px !important;
+  }
+  .quiz-main .number-grid{
+    margin:9px 8px 10px !important;
+    padding:9px 12px 10px !important;
+    column-gap:12px !important;
+    row-gap:7px !important;
+  }
+}
+
+
+/* v12.8 — round header and action spacing */
+.quiz-main .board-header{
+  padding:14px 18px 40px !important;
+}
+
+.quiz-main .actions{
+  padding:12px 16px !important;
+  box-sizing:border-box !important;
+}
+
+@media(max-width:850px){
+  .quiz-main .board-header{
+    padding:12px 14px 40px !important;
+  }
+  .quiz-main .actions{
+    padding:10px 12px !important;
+  }
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">🎯 Quizmaster <span class="version-badge">v10.11</span></div></header>
+<header class="top">
+  <div class="top-brand">
+    <div class="quiztime-brand quiztime-brand-header" aria-label="QuizTime">
+      <span class="quiztime-word quiztime-quiz">QUIZ</span>
+      <img class="quiztime-clock" src="./assets/quiztime-clock.gif" alt="" aria-hidden="true">
+      <span class="quiztime-word quiztime-time">TIME</span>
+    </div>
+  </div>
+  <span class="version-badge">v12.8</span>
+</header>
 <main id="app" class="screen"></main>
 </div>
 <script type="module" src="./js/app.js"></script>

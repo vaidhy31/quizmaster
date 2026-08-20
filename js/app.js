@@ -6,6 +6,7 @@ import { renderLeaderboard } from "./components/Leaderboard.js";
 import { renderScoringPanel } from "./components/ScoringPanel.js";
 import { renderNumberBoard } from "./components/NumberBoard.js";
 import { renderQuestionContent } from "./questions/questionTypes.js";
+import { renderBrand } from "./components/Brand.js";
 import { startFireworks, stopFireworks } from "./effects/fireworks.js";
 
 const app = document.getElementById("app");
@@ -23,8 +24,7 @@ function render() {
 
 function renderHome() {
   app.innerHTML = `<div class="card center">
-    <div style="font-size:64px">🎯</div>
-    <h1>Quizmaster</h1>
+    ${renderBrand("hero")}
     ${quiz
       ? `<h2>${esc(quiz.name)}</h2>
          <p>${quiz.rounds.length} rounds · ${quiz.rounds.reduce((n,r) => n + r.questions.length, 0)} questions</p>
@@ -160,6 +160,7 @@ function renderFullLeaderboard() {
 function renderFinalSequence(sorted) {
   app.innerHTML = `<div class="final-screen">
     <div class="final-card">
+      ${renderBrand("final")}
       <div class="final-trophy">🏆</div>
       <div class="final-kicker">QUIZ COMPLETE</div>
       <h1>Final Scores</h1>

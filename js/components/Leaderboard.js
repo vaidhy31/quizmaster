@@ -7,7 +7,7 @@ export function renderLeaderboard({ quiz, game }) {
 
   return `
     <aside class="card side-board">
-      <h3>🏆 Leaderboard</h3>
+      <h3 class="leaderboard-title">🏆 Leaderboard</h3>
       <div class="side-current">
         Team ${game.currentTeam + 1} of ${quiz.teams.length}:
         <strong>${esc(quiz.teams[game.currentTeam])}</strong>

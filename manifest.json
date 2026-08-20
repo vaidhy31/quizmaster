@@ -1,12 +1,12 @@
 {
-  "name": "Quizmaster",
-  "short_name": "Quizmaster",
+  "name": "QuizTime",
+  "short_name": "QuizTime",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f5f7fb",
-  "theme_color": "#111827",
-  "description": "Quizmaster",
+  "background_color": "#fffaf2",
+  "theme_color": "#ff9933",
+  "description": "A fun family quiz game",
   "icons": [
     {
       "src": "icon-192.png",
