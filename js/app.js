@@ -366,7 +366,7 @@ async function reloadQuiz() {
       <div style="font-size:54px">⚠️</div>
       <h2>Could not load the quiz catalog</h2>
       <p>${esc(error.message)}</p>
-      <p class="muted">Make sure the quizzes folder and quiz modules are present.</p>
+      <p class="muted">Make sure the quizzes folder and quiz catalog are present.</p>
       <div class="actions"><button class="btn primary" data-action="reload-quiz">Try Again</button></div>
     </div>`;
   }
@@ -376,7 +376,7 @@ async function selectQuiz(id) {
   const item = quizCatalog.find(q => q.id === id);
   if (!item) return;
   try {
-    quiz = loadQuiz(item);
+    quiz = await loadQuiz(item);
     selectedQuizId = id;
     game = createGameForQuiz(quiz);
     render();

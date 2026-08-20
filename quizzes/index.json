@@ -3,7 +3,8 @@
     {
       "id": "fun-india",
       "name": "Fun India Quiz",
-      "path": "./fun-india/quiz.json"
+      "description": "A fun quiz about India",
+      "path": "fun-india/quiz.json"
     }
   ]
 }

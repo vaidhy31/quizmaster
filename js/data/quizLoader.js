@@ -7,9 +7,7 @@ export function validateQuiz(x) {
       throw new Error(`Round ${i + 1} is invalid.`);
     }
     round.questions.forEach((q, j) => {
-      if (!q || !q.type || !q.question) {
-        throw new Error(`Round ${i + 1}, question ${j + 1} is invalid.`);
-      }
+      if (!q || !q.type || !q.question) throw new Error(`Round ${i + 1}, question ${j + 1} is invalid.`);
       if (q.type === "imageIdentification") {
         if (!q.image || !["full", "partial"].includes(q.variant)) {
           throw new Error(`Round ${i + 1}, question ${j + 1}: invalid image identification configuration.`);
@@ -28,13 +26,16 @@ export function validateQuiz(x) {
   });
 }
 
-export function loadQuiz(entry) {
-  if (!entry || !entry.quiz) throw new Error("Invalid quiz catalog entry.");
-  const quiz = structuredClone(entry.quiz);
+export async function loadQuiz(entry) {
+  if (!entry || !entry.path) throw new Error("Invalid quiz catalog entry.");
+  const response = await fetch(`./quizzes/${entry.path.replace(/^\.\//, "")}`, { cache: "no-store" });
+  if (!response.ok) throw new Error(`Could not load quiz: ${entry.path} (${response.status}).`);
+  const quiz = await response.json();
   validateQuiz(quiz);
-  quiz.assetBase = entry.assetBase;
+  const quizDir = entry.path.substring(0, entry.path.lastIndexOf("/") + 1);
+  quiz.assetBase = new URL(`./quizzes/${quizDir}`, document.baseURI).href;
   quiz.rounds.forEach(round => round.questions.forEach(question => {
-    question.assetBase = entry.assetBase;
+    question.assetBase = quiz.assetBase;
   }));
   return quiz;
 }

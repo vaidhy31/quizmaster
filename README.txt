@@ -1,22 +1,23 @@
-QuizTime v1.5
+QuizTime v1.6
 
-Frozen baseline: QuizTime v1.0.
+This version keeps the QuizTime v1.0 layout, colours, navigation, and scoring UI frozen while adding modular question types and a multi-quiz catalog.
 
-v1.5 updates:
-- The application version is centrally defined in js/config.js and displayed in the QuizTime header.
-- The ZIP/package folder and README use the same version number.
-- The quiz catalog is defined in quizzes/index.js.
-- QuizTime now opens at the quiz catalog and requires the user to select a quiz.
-- Each quiz lives in its own quizzes/<quiz-id>/ folder.
-- Runtime quiz content is loaded from quiz.js modules so QuizTime works when opened directly from the iPad Files app.
-- Quiz-specific assets remain under quizzes/<quiz-id>/assets/.
-- App assets remain in the top-level assets/ folder.
-- Image Identification supports full and partial variants.
+v1.6 updates:
+- Quiz content is JSON only; there are no duplicate quiz.js files.
+- quizzes/index.json is the quiz catalog.
+- Each quiz lives in quizzes/<quiz-id>/quiz.json.
+- Quiz-specific assets live in quizzes/<quiz-id>/assets/.
+- Application assets remain under the top-level assets/ folder.
+- The app always opens at the quiz catalog and requires the user to select a quiz.
+- Quiz JSON and catalog data are loaded with fetch(), so QuizTime is intended to run from an HTTP server such as GitHub Pages or a local web server.
+- Image Identification supports full and partial image questions with reveal behavior.
 
-QuizTime opens at the quiz catalog. The user must select a quiz before the quiz can start. There is no default startup quiz.
+Local server example:
+  python3 -m http.server 8000
+Then open:
+  http://localhost:8000/
 
 To add a quiz:
-1. Create quizzes/<quiz-id>/quiz.js.
-2. Put its assets in quizzes/<quiz-id>/assets/.
-3. Add the quiz import and catalog entry in quizzes/index.js.
-4. Set defaultQuizId to that quiz id if it should start automatically.
+1. Create quizzes/<quiz-id>/quiz.json.
+2. Put quiz-specific images/audio/etc. in quizzes/<quiz-id>/assets/.
+3. Add an entry to quizzes/index.json with id, name, description, and path.
