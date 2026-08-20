@@ -6,25 +6,27 @@ export function renderScoringPanel(quiz, game, points) {
     const selected = multiplier > 0;
     const child = multiplier === 2;
 
-    return [
-      '<div class="score-btn ' + (selected ? 'good' : '') + '">',
-      '<div class="score-team-row">',
-      '<span class="score-team-name">' + esc(team) + '</span>',
-      selected ? '<span class="score-points">+' + (points * multiplier) + '</span>' : '',
-      '</div>',
-      '<div class="score-mode">',
-      '<button type="button" class="score-mode-btn ' +
-        (selected && !child ? 'selected' : '') +
-        '" data-action="set-score" data-team="' + index +
-        '" data-multiplier="1">Adult</button>',
-      '<button type="button" class="score-mode-btn ' +
-        (child ? 'selected' : '') +
-        '" data-action="set-score" data-team="' + index +
-        '" data-multiplier="2">Child 2×</button>',
-      '</div>',
-      '</div>'
-    ].join('');
-  }).join('');
+    return `
+      <div class="score-btn ${selected ? "good" : ""}">
+        <div class="score-team-row">
+          <span class="score-team-name">${esc(team)}</span>
+          ${selected ? `<span class="score-points">+${points * multiplier}</span>` : ""}
+        </div>
+
+        <div class="score-mode">
+          <button type="button"
+            class="score-mode-btn ${selected && !child ? "selected" : ""}"
+            data-action="set-score"
+            data-team="${index}"
+            data-multiplier="1">Adult</button>
+          <button type="button"
+            class="score-mode-btn ${child ? "selected" : ""}"
+            data-action="set-score"
+            data-team="${index}"
+            data-multiplier="2">Child 2×</button>
+        </div>
+      </div>`;
+  }).join("");
 
   return `
     <div class="score-panel">
